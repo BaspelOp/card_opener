@@ -25,10 +25,10 @@ export default function Pack({ userId }) {
     };
 
     return (
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             {!opened ? (
                 <motion.div 
-                    className="w-48 h-64 bg-yellow-500 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg cursor-pointer"
+                    className="w-48 h-64 bg-yellow-500 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg cursor-pointer pointer-events-auto"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={openPack}
@@ -37,7 +37,7 @@ export default function Pack({ userId }) {
                 </motion.div>
             ) : (
                 <>
-                    <div className='flex flex-col items-center'>
+                    <div className='flex flex-col items-center pointer-events-auto'>
                         <div className="grid grid-cols-3 gap-4">
                             {cards.map((card, index) => (
                                 <Tilt
