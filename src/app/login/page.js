@@ -1,15 +1,12 @@
+import Link from "next/link";
+
 export default function Login() {
     return (
       <>
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img
-              alt="Your Company"
-              src="https://tailwindui.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-              className="mx-auto h-10 w-auto"
-            />
             <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-              Sign in to your account
+              Přihlas se do svého účtu
             </h2>
           </div>
   
@@ -17,7 +14,7 @@ export default function Login() {
             <form action="#" method="POST" className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-                  Email address
+                  Uživatelské jméno
                 </label>
                 <div className="mt-2">
                   <input
@@ -34,11 +31,11 @@ export default function Login() {
               <div>
                 <div className="flex items-center justify-between">
                   <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
-                    Password
+                    Heslo
                   </label>
                   <div className="text-sm">
                     <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                      Forgot password?
+                      Zapomenuté heslo?
                     </a>
                   </div>
                 </div>
@@ -59,16 +56,14 @@ export default function Login() {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                  Sign in
+                  Přihlásit se
                 </button>
               </div>
             </form>
   
             <p className="mt-10 text-center text-sm/6 text-gray-500">
-              Not a member?{' '}
-              <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                Register
-              </a>
+              Nemáš učet?{' '}
+              <Link href="/register" className="font-semibold text-indigo-600 hover:text-indigo-500">Registrace</Link>
             </p>
           </div>
         </div>
