@@ -1,6 +1,27 @@
 name: dbs2-projekt
 
 services:
+  nextjs:
+    build: ./nextjs
+    command: npm run dev
+    container_name: nextjs
+    depends_on:
+      - postgres
+    develop:
+      watch:
+        - action: sync
+          path: ./nextjs
+          target: /app
+        - action: rebuild
+          path: ./nextjs/package.json
+    networks:
+      main:
+        ipv4_address: 192.168.0.11
+    ports:
+      - "3000:3000"
+    profiles:
+      - nextjs
+      
   postgres:
     container_name: postgres
     environment:
