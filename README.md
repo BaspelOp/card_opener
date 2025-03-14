@@ -18,14 +18,19 @@
 - [ ] vhodným způsobem zajistit ukládání obrázků, které budou v aplikaci načteny a zobrazeny
 - [ ] aplikace bude využívat minimálně 2 plnohodnotné formuláře (např. ošetření vstupních polí, apod.) pro vytváření nebo modifikaci dat v tabulkách
 
+## Commands
 
-## NextJS
+### NextJS
 
 ```
 docker compose --profile postgres --profile nextjs up --watch
 ```
 
-## Postgres
+```
+docker container run -i --name node-temp -t --rm -v .:/app -w /app node:22.14.0 COMMAND
+```
+
+### Postgres
 
 ```
 docker compose --profile postgres --profile pgadmin4 up -d
