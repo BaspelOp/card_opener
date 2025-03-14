@@ -110,10 +110,26 @@ CREATE TABLE trades(
 );
 
 -- Views
-CREATE VIEW top_10_users AS
+CREATE VIEW top_10_users_with_most_cards AS
     SELECT users.username AS username, count(owned_cards.user_id) AS card_count 
         FROM owned_cards
         JOIN users ON owned_cards.user_id = users.id
         GROUP BY users.username
+        ORDER BY card_count DESC
+        LIMIT 10;
+
+CREATE VIEW top_10_most_owned_cards AS
+    SELECT cards.name AS name, sum(owned_cards.quantity) AS card_count 
+        FROM owned_cards
+        JOIN cards ON owned_cards.card_id = cards.id
+        GROUP BY cards.name
+        ORDER BY card_count DESC
+        LIMIT 10;
+
+CREATE VIEW top_10_most_wanted_cards AS
+    SELECT cards.name AS name, count(trades.wanted_card_id) AS card_count
+        FROM trades
+        JOIN cards ON trades.wanted_card_id = cards.id
+        GROUP BY cards.name
         ORDER BY card_count DESC
         LIMIT 10;

@@ -4,7 +4,7 @@
 
 - [x] cca. 10 tabulek navrženého datového modelu (individuální domluva)
 - [x] alespoň jeden číselník – viz. například https://cs.wikipedia.org/wiki/%C4%8C%C3%ADseln%C3%ADk
-- [ ] alespoň tři pohledy. které budou volány z aplikace
+- [x] alespoň tři pohledy. které budou volány z aplikace
 - [ ] alespoň tři funkce různého typu s odpovídající složitostí
 - [ ] alespoň tři uložené procedury
 - [ ] alespoň dva triggery

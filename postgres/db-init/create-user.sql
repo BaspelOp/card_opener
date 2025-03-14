@@ -22,4 +22,8 @@ GRANT SELECT ON cards_in_package TO app;
 
 GRANT SELECT, INSERT(from_user_id, to_user_id, offered_card_id, wanted_card_id), DELETE ON trades TO app;
 
-GRANT SELECT ON top_10_users TO app;
+GRANT SELECT ON top_10_users_with_most_cards TO app;
+
+GRANT SELECT ON top_10_most_owned_cards TO app;
+
+GRANT SELECT ON top_10_most_wanted_cards TO app;
