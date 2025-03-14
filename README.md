@@ -6,7 +6,7 @@
 - [x] alespoň jeden číselník – viz. například https://cs.wikipedia.org/wiki/%C4%8C%C3%ADseln%C3%ADk
 - [x] alespoň tři pohledy. které budou volány z aplikace
 - [ ] alespoň tři funkce různého typu s odpovídající složitostí
-- [ ] alespoň tři uložené procedury
+- [x] alespoň tři uložené procedury
 - [ ] alespoň dva triggery
 - [ ] alespoň jedna transakce s ošetřeným chováním při rollbacku
 - [x] použití indexů na neklíčové sloupce
