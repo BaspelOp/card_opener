@@ -8,40 +8,40 @@ $$;
 
 CREATE FUNCTION get_random_cards_from_package(in_package_id INTEGER) RETURNS INTEGER[] LANGUAGE plpgsql AS $$
     DECLARE
-        packages_row RECORD;
-        cards_rows RECORD;
-        cards_chances_cumulative INTEGER[][];
-        chance_sum INTEGER := 0;
-        random_integer INTEGER;
-        output_cards INTEGER[];
+        v_packages_row RECORD;
+        v_cards_rows RECORD;
+        v_cards_chances_cumulative INTEGER[][];
+        v_chance_sum INTEGER := 0;
+        v_random_integer INTEGER;
+        v_output_cards INTEGER[];
     BEGIN
-        SELECT number_of_cards AS number_of_cards INTO STRICT packages_row
+        SELECT number_of_cards AS number_of_cards INTO STRICT v_packages_row
             FROM packages
             WHERE id = in_package_id;
 
-        FOR cards_rows IN
+        FOR v_cards_rows IN
             SELECT cards.id AS id, card_rarities.chance AS chance
                 FROM cards_in_package
                 JOIN cards ON cards_in_package.card_id = cards.id
                 JOIN card_rarities ON cards.rarity_id = card_rarities.id
                 WHERE cards_in_package.package_id = in_package_id
         LOOP
-           chance_sum = chance_sum + cards_rows.chance;
-           cards_chances_cumulative := array_cat(cards_chances_cumulative, ARRAY[ARRAY[cards_rows.id, chance_sum]]);
+           v_chance_sum = v_chance_sum + v_cards_rows.chance;
+           v_cards_chances_cumulative := array_cat(v_cards_chances_cumulative, ARRAY[ARRAY[v_cards_rows.id, v_chance_sum]]);
         END LOOP;
 
-        FOR i IN 1..packages_row.number_of_cards LOOP
-            random_integer := floor(random() * chance_sum) + 1;
+        FOR i IN 1..v_packages_row.number_of_cards LOOP
+            v_random_integer := floor(random() * v_chance_sum) + 1;
             
-            FOR i IN 1..array_length(cards_chances_cumulative, 1) LOOP
-                IF cards_chances_cumulative[i][2] >= random_integer THEN
-                    output_cards := array_append(output_cards, cards_chances_cumulative[i][1]);
+            FOR i IN 1..array_length(v_cards_chances_cumulative, 1) LOOP
+                IF v_cards_chances_cumulative[i][2] >= v_random_integer THEN
+                    v_output_cards := array_append(v_output_cards, v_cards_chances_cumulative[i][1]);
                     EXIT;
                 END IF;
             END LOOP;
         END LOOP;
 
-        RETURN output_cards;
+        RETURN v_output_cards;
     END;
 $$;
 
@@ -54,13 +54,13 @@ $$;
 
 CREATE PROCEDURE login(in_email JSONB, in_password NON_EMPTY_TEXT) LANGUAGE plpgsql AS $$
     DECLARE
-        users_row RECORD;
+        v_users_row RECORD;
     BEGIN
-        SELECT password AS password INTO STRICT users_row
+        SELECT password AS password INTO STRICT v_users_row
             FROM users
             WHERE email = in_email;
 
-        IF users_row.password = crypt(in_password, users_row.password)
+        IF v_users_row.password = crypt(in_password, v_users_row.password)
         THEN
             RETURN;
         ELSE
@@ -71,9 +71,9 @@ $$;
 
 CREATE PROCEDURE add_owned_card(in_user_id INTEGER, in_card_id INTEGER) LANGUAGE plpgsql AS $$
     DECLARE
-       owned_cards_row RECORD;
+       v_owned_cards_row RECORD;
     BEGIN
-        SELECT * INTO owned_cards_row FROM owned_cards WHERE user_id = in_user_id AND card_id = in_card_id;
+        SELECT * INTO v_owned_cards_row FROM owned_cards WHERE user_id = in_user_id AND card_id = in_card_id;
         IF NOT FOUND
         THEN
             INSERT INTO owned_cards (user_id, card_id) VALUES (in_user_id, in_card_id);
@@ -87,14 +87,14 @@ $$;
 
 CREATE PROCEDURE remove_owned_card(in_user_id INTEGER, in_card_id INTEGER) LANGUAGE plpgsql AS $$
     DECLARE
-       owned_cards_row RECORD;
+       v_owned_cards_row RECORD;
     BEGIN
-        SELECT * INTO owned_cards_row FROM owned_cards WHERE user_id = in_user_id AND card_id = in_card_id;
+        SELECT * INTO v_owned_cards_row FROM owned_cards WHERE user_id = in_user_id AND card_id = in_card_id;
         IF NOT FOUND
         THEN
             RAISE EXCEPTION 'User does not own this card';
         ELSE
-           IF owned_cards_row.quantity > 1
+           IF v_owned_cards_row.quantity > 1
            THEN
                UPDATE owned_cards SET quantity = quantity - 1 WHERE user_id = in_user_id AND card_id = in_card_id;
            ELSE
