@@ -7,7 +7,7 @@
 - [x] alespoň tři pohledy. které budou volány z aplikace
 - [ ] alespoň tři funkce různého typu s odpovídající složitostí
 - [x] alespoň tři uložené procedury
-- [ ] alespoň dva triggery
+- [x] alespoň dva triggery
 - [ ] alespoň jedna transakce s ošetřeným chováním při rollbacku
 - [x] použití indexů na neklíčové sloupce
 - [x] použití kompozitních primárních klíčů

@@ -6,6 +6,13 @@ CREATE FUNCTION update_modified_column() RETURNS TRIGGER LANGUAGE plpgsql AS $$
     END;
 $$;
 
+CREATE FUNCTION remove_card_before_add_trade() RETURNS TRIGGER LANGUAGE plpgsql AS $$
+    BEGIN
+        CALL remove_owned_card(NEW.from_user_id, NEW.offered_card_id);
+        RETURN NEW;
+    END;
+$$;
+
 CREATE FUNCTION get_random_cards_from_package(in_package_id INTEGER) RETURNS INTEGER[] LANGUAGE plpgsql AS $$
     DECLARE
         v_packages_row RECORD;
@@ -105,14 +112,6 @@ CREATE PROCEDURE remove_owned_card(in_user_id INTEGER, in_card_id INTEGER) LANGU
     END;
 $$;
 
-CREATE PROCEDURE create_trade_offer(in_from_user_id INTEGER, in_to_user_id INTEGER, in_offered_card_id INTEGER, in_wanted_card_id INTEGER) LANGUAGE plpgsql AS $$
-    BEGIN
-        CALL remove_owned_card(in_from_user_id, in_offered_card_id);
-   
-        INSERT INTO trades (from_user_id, to_user_id, offered_card_id, wanted_card_id) VALUES (in_from_user_id, in_to_user_id, in_offered_card_id, in_wanted_card_id);
-    END;
-$$;
-
 CREATE PROCEDURE accept_trade_offer(in_trades_id INTEGER) LANGUAGE plpgsql AS $$
     DECLARE
         v_trades_row RECORD;
@@ -143,3 +142,5 @@ $$;
 
 -- Triggers
 CREATE TRIGGER update_modified_time BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_modified_column();
+
+CREATE TRIGGER remove_card_before_add_trade BEFORE INSERT ON trades FOR EACH ROW EXECUTE FUNCTION remove_card_before_add_trade();
