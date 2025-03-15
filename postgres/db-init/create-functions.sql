@@ -112,7 +112,7 @@ CREATE PROCEDURE remove_owned_card(in_user_id INTEGER, in_card_id INTEGER) LANGU
     END;
 $$;
 
-CREATE PROCEDURE accept_trade_offer(in_trades_id INTEGER) LANGUAGE plpgsql AS $$
+CREATE PROCEDURE accept_trade(in_trades_id INTEGER) LANGUAGE plpgsql AS $$
     DECLARE
         v_trades_row RECORD;
     BEGIN
@@ -129,7 +129,7 @@ CREATE PROCEDURE accept_trade_offer(in_trades_id INTEGER) LANGUAGE plpgsql AS $$
     END;
 $$;
 
-CREATE PROCEDURE remove_trade_offer(in_trades_id INTEGER) LANGUAGE plpgsql AS $$
+CREATE PROCEDURE remove_trade(in_trades_id INTEGER) LANGUAGE plpgsql AS $$
     DECLARE
        v_trades_row RECORD;
     BEGIN
