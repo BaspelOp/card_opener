@@ -52,6 +52,21 @@ CREATE FUNCTION get_random_cards_from_package(in_package_id INTEGER) RETURNS INT
     END;
 $$;
 
+CREATE FUNCTION get_card(in_card_id INTEGER) RETURNS JSONB LANGUAGE plpgsql AS $$
+    DECLARE
+        v_cards_row RECORD;
+    BEGIN
+        SELECT cards.uuid as uuid, cards.name as name, cards.image_path as image_path, card_rarities.image_path as rarity_image_path, card_frames.image_path as frame_image_path, card_icons.image_path as icon_image_path INTO STRICT v_cards_row
+            FROM cards
+            JOIN card_rarities ON cards.rarity_id = card_rarities.id
+            JOIN card_frames ON cards.frame_id = card_frames.id
+            JOIN card_icons ON cards.icon_id = card_icons.id
+            WHERE cards.id = in_card_id;
+
+        RETURN row_to_json (v_cards_row);
+    END;
+$$;
+
 -- Procedures
 CREATE PROCEDURE register(in_username NON_EMPTY_TEXT, in_email JSONB, in_password NON_EMPTY_TEXT) LANGUAGE plpgsql AS $$
     BEGIN
