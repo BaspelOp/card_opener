@@ -23,7 +23,7 @@
 ### NextJS
 
 ```
-docker compose --profile postgres --profile nextjs up --watch
+docker compose --profile app up --watch
 ```
 
 ```
@@ -33,5 +33,5 @@ docker container run -i --name node-temp -t --rm -v .:/app -w /app node:22.14.0 
 ### Postgres
 
 ```
-docker compose --profile postgres --profile pgadmin4 up -d
+docker compose --profile db up -d
 ```

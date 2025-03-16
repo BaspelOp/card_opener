@@ -20,6 +20,8 @@ services:
     ports:
       - "3000:3000"
     profiles:
+      - all
+      - app
       - nextjs
       
   postgres:
@@ -33,6 +35,9 @@ services:
       main:
         ipv4_address: 192.168.0.10
     profiles:
+      - all
+      - app
+      - db
       - postgres
     # set shared memory limit when using docker-compose
     shm_size: 128mb
@@ -55,6 +60,8 @@ services:
     ports:
       - "8080:80"
     profiles:
+      - all
+      - db
       - pgadmin4
     volumes:
       - pgadmin4-volume:/var/lib/pgadmin
