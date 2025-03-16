@@ -67,27 +67,30 @@ CREATE FUNCTION get_card(in_card_id INTEGER) RETURNS JSONB LANGUAGE plpgsql AS $
     END;
 $$;
 
--- Procedures
-CREATE PROCEDURE register(in_username NON_EMPTY_TEXT, in_email JSONB, in_password NON_EMPTY_TEXT) LANGUAGE plpgsql AS $$
-    BEGIN
-        INSERT INTO users (username, email, password) VALUES (in_username, in_email, crypt(in_password, gen_salt('bf')));
-    END;
-$$;
-
-CREATE PROCEDURE login(in_email JSONB, in_password NON_EMPTY_TEXT) LANGUAGE plpgsql AS $$
+CREATE FUNCTION login(in_email JSONB, in_password NON_EMPTY_TEXT) RETURNS JSONB LANGUAGE plpgsql AS $$
     DECLARE
         v_users_row RECORD;
     BEGIN
         SELECT password AS password INTO STRICT v_users_row
             FROM users
             WHERE email = in_email;
-
+        
         IF v_users_row.password = crypt(in_password, v_users_row.password)
         THEN
-            RETURN;
+            RETURN '{"success":true}';
         ELSE
-            RAISE EXCEPTION 'Wrong password.' USING DETAIL = 'in_password after hash and users.password is not same.';
+            RETURN '{"success":false, "message":"Wrong password."}';
         END IF;
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RETURN '{"success":false, "message":"Wrong email."}';
+    END;
+$$;
+
+-- Procedures
+CREATE PROCEDURE register(in_username NON_EMPTY_TEXT, in_email JSONB, in_password NON_EMPTY_TEXT) LANGUAGE plpgsql AS $$
+    BEGIN
+        INSERT INTO users (username, email, password) VALUES (in_username, in_email, crypt(in_password, gen_salt('bf')));
     END;
 $$;
 
