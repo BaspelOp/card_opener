@@ -16,7 +16,7 @@ services:
           path: ./nextjs/package.json
     networks:
       main:
-        ipv4_address: 192.168.0.11
+        ipv4_address: 192.168.0.6
     ports:
       - "3000:3000"
     profiles:
@@ -33,7 +33,7 @@ services:
     image: postgres:17.4
     networks:
       main:
-        ipv4_address: 192.168.0.10
+        ipv4_address: 192.168.0.5
     profiles:
       - all
       - app
@@ -56,7 +56,7 @@ services:
     image: dpage/pgadmin4:9.1
     networks:
       main:
-        ipv4_address: 192.168.0.100
+        ipv4_address: 192.168.0.4
     ports:
       - "8080:80"
     profiles:
@@ -70,7 +70,7 @@ networks:
   main:
     ipam:
       config:
-        - subnet: "192.168.0.0/24"
+        - subnet: "192.168.0.0/29"
 
 volumes:
   postgres-volume:
