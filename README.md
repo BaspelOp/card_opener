@@ -23,7 +23,7 @@
 ### NextJS
 
 ```
-docker compose --profile app up --watch
+docker compose --profile app up --build -V --watch
 ```
 
 ```
