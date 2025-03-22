@@ -1,10 +1,26 @@
 name: dbs2-projekt
 
 services:
-  nextjs:
-    build: ./nextjs
-    command: npm run dev
-    container_name: nextjs
+  nextjs-prod:
+    build:
+      context: ./nextjs
+      dockerfile: prod.Dockerfile
+    container_name: nextjs-prod
+    depends_on:
+      - postgres
+    networks:
+      main:
+        ipv4_address: 192.168.0.6
+    ports:
+      - "3000:3000"
+    profiles:
+      - prod
+
+  nextjs-dev:
+    build:
+      context: ./nextjs
+      dockerfile: dev.Dockerfile
+    container_name: nextjs-dev
     depends_on:
       - postgres
     develop:
@@ -20,9 +36,7 @@ services:
     ports:
       - "3000:3000"
     profiles:
-      - all
-      - app
-      - nextjs
+      - dev
       
   postgres:
     container_name: postgres
@@ -30,19 +44,18 @@ services:
       POSTGRES_PASSWORD: example
     expose:
       - "5432"
-    image: postgres:17.4
+    image: postgres:17.4-alpine3.21
     networks:
       main:
         ipv4_address: 192.168.0.5
     profiles:
-      - all
-      - app
+      - prod
+      - dev
       - db
-      - postgres
     # set shared memory limit when using docker-compose
     shm_size: 128mb
     volumes:
-      - postgres-volume:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
       - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
       - ./postgres/db-init:/tmp/db-init:ro
   
@@ -60,11 +73,9 @@ services:
     ports:
       - "8080:80"
     profiles:
-      - all
       - db
-      - pgadmin4
     volumes:
-      - pgadmin4-volume:/var/lib/pgadmin
+      - pgadmin4:/var/lib/pgadmin
 
 networks:
   main:
@@ -73,5 +84,5 @@ networks:
         - subnet: "192.168.0.0/29"
 
 volumes:
-  postgres-volume:
-  pgadmin4-volume:
+  postgres:
+  pgadmin4:

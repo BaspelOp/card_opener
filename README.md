@@ -22,12 +22,20 @@
 
 ### NextJS
 
+#### Production
+
 ```
-docker compose --profile app up --build -V --watch
+docker compose --profile prod up --build -d -V
+```
+
+#### Development
+
+```
+docker compose --profile dev up --build -V --watch
 ```
 
 ```
-docker container run -i --name node-temp -t --rm -v .:/app -w /app node:22.14.0 COMMAND
+docker container run -i --name node-temp -t --rm -v .:/app -w /app node:22.14.0-bookworm COMMAND
 ```
 
 ### Postgres
