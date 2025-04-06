@@ -1,6 +1,50 @@
+"use client";
+
+import { useState } from "react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 
+
 export default function Login() {
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    setLoading(true);
+    setMessage("");
+
+    const result = await signIn('credentials', {
+      email: formData.email,
+      password: formData.password,
+      redirect: true,
+      callbackUrl: "/profile",
+    });
+
+    console.log(result);
+
+    setLoading(false);
+
+    if (result.error === "CredentialsSignin") {
+      setMessage("Neplatné přihlašovací údaje.");
+      return;
+    }
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -11,21 +55,23 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form onSubmit={handleLogin} method="POST" className="space-y-6">
             <div>
               <label
                 htmlFor="email"
                 className="block text-sm/6 font-medium text-gray-900"
               >
-                Uživatelské jméno
+                Email
               </label>
               <div className="mt-2">
                 <input
                   id="email"
-                  name="email"
+                  name="email" 
                   type="email"
                   required
                   autoComplete="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="block w-full rounded-md bg-gray-200 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
               </div>
@@ -55,6 +101,8 @@ export default function Login() {
                   type="password"
                   required
                   autoComplete="current-password"
+                  value={formData.password}
+                  onChange={handleChange}
                   className="block w-full rounded-md bg-gray-200 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
               </div>
@@ -65,11 +113,10 @@ export default function Login() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-2xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Přihlásit se
+                {loading ? "Přihlašuji..." : "Přihlásit se"}
               </button>
             </div>
           </form>
-
           <p className="mt-10 text-center text-sm/6 text-gray-500">
             Nemáš učet?{" "}
             <Link
@@ -79,6 +126,8 @@ export default function Login() {
               Registrace
             </Link>
           </p>
+
+          {message && <p className="mt-4 text-center text-sm text-red-500">{message}</p>}
         </div>
       </div>
     </>
