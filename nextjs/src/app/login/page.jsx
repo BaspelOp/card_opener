@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-
+import Notify from "@/components/Notify";
 
 export default function Login() {
 
@@ -13,7 +13,12 @@ export default function Login() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+
+  const [notify, setNotify] = useState({
+    visible: false,
+    message: "",
+    type: "",
+  });
 
   const handleChange = (e) => {
     setFormData({
@@ -26,7 +31,6 @@ export default function Login() {
     e.preventDefault();
 
     setLoading(true);
-    setMessage("");
 
     const result = await signIn('credentials', {
       email: formData.email,
@@ -35,18 +39,25 @@ export default function Login() {
       callbackUrl: "/profile",
     });
 
-    console.log(result);
+    if (result.error === "CredentialsSignin") {
+      setNotify({
+        visible: true,
+        message: "Neplatný email nebo heslo.",
+        type: "error",
+      });
+      return;
+    }
 
     setLoading(false);
 
-    if (result.error === "CredentialsSignin") {
-      setMessage("Neplatné přihlašovací údaje.");
-      return;
-    }
-  }
+    setTimeout(() => {
+      setNotify({ ...notify, visible: false });
+    }, 5000);
+  };
 
   return (
     <>
+      {notify.visible && <Notify message={notify.message} type={notify.type} />}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
@@ -111,7 +122,7 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-2xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-2xs hover:bg-indigo-500 hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 {loading ? "Přihlašuji..." : "Přihlásit se"}
               </button>
@@ -126,8 +137,6 @@ export default function Login() {
               Registrace
             </Link>
           </p>
-
-          {message && <p className="mt-4 text-center text-sm text-red-500">{message}</p>}
         </div>
       </div>
     </>

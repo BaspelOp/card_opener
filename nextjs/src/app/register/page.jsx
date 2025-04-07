@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Notify from "@/components/Notify";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -10,7 +11,12 @@ export default function Register() {
   })
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+
+  const [notify, setNotify] = useState({
+    visible: false,
+    message: "",
+    type: "",
+  });
 
   const handleChange = (e) => {
     setFormData({
@@ -22,7 +28,6 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
 
     try {
       const response = await fetch("/api/register", {
@@ -35,14 +40,22 @@ export default function Register() {
 
       const data = await response.json();
 
-      if (response.ok) {
-        setMessage(data.message);
-      } else {
-        setMessage(data.error || "Chyba při registraci");
-      }
-
+      setNotify({
+        visible: true,
+        message: response.ok ? data.message : data.error || "Registrace selhala!",
+        type: response.ok ? "success" : "error",
+      })
     } catch (err) {
-      setMessage("Chyb při odesílání požadavku");
+      console.error(err);
+      setNotify({
+        visible: true,
+        message: "Chyba při odesílání požadavku",
+        type: "error",
+      });
+
+      setTimeout(() => {
+        setNotify({ ...notify, visible: false });
+      }, 5000);
     }
 
     setLoading(false);
@@ -50,6 +63,7 @@ export default function Register() {
   
   return (
     <>
+      {notify.visible && <Notify message={notify.message} type={notify.type} />}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
@@ -128,14 +142,12 @@ export default function Register() {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-2xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-2xs hover:bg-indigo-500 hover:cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 {loading ? "Registrace..." : "Registrovat se"}
               </button>
             </div>
           </form>
-
-          {message && <p className="mt-4 text-center text-sm text-red-500">{message}</p>}
         </div>
       </div>
     </>

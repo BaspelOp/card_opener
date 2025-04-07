@@ -23,13 +23,20 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         );
         const result = queryResult.rows[0]?.result;
         
+        const addInfoResult = await client.query(
+          'SELECT id, username FROM users WHERE email = $1',
+          [JSON.stringify(email)]
+        )
+
+        const infoResult = addInfoResult.rows[0];
+
         client.release();
         
         if (!result || !result.success) {
           return false;
         }
         
-        return { id: result.id, email, role: result.role, message: result.message };
+        return { databaseId: infoResult.id, email, message: result.message, role: result.role, username: infoResult.username };
       }
     })
   ],
@@ -51,6 +58,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (user) {
         token.id = user.id;
         token.role = user.role;
+        token.username = user.username;
+        token.email = user.email;
+        token.databaseId = user.databaseId;
       }
       return token;
     },
@@ -58,6 +68,9 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (token && session.user) {
         session.user.id = token.id;
         session.user.role = token.role;
+        session.user.username = token.username;
+        session.user.email = token.email;
+        session.user.databaseId = token.databaseId;
       }
       return session;
     },

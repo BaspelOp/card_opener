@@ -24,7 +24,7 @@ export default function ProfileComponent() {
         </p>
         <button
           onClick={() => signIn()}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 hover:cursor-pointer"
+          className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 hover:cursor-pointer focus-visible:outline-indigo-600"
         >Přihlásit se</button>
       </div>
     );
@@ -37,7 +37,7 @@ export default function ProfileComponent() {
         <div className="flex flex-col gap-4">
           <div>
             <p className="text-gray-600 text-sm">Jméno:</p>
-            <p className="text-lg font-medium">{session.user.name || "Neznámé jméno"}</p>
+            <p className="text-lg font-medium">{session.user.username || "Neznámé jméno"}</p>
           </div>
           <div>
             <p className="text-gray-600 text-sm">Email:</p>

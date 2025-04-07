@@ -4,18 +4,33 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import Tilt from "react-parallax-tilt";
+import Notify from "@/components/Notify";
 
-export default function Pack({ userId }) {
+export default function Pack() {
   const [opened, setOpened] = useState(false);
   const [cards, setCards] = useState([]);
   const [packs, setPacks] = useState([]);
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
+
+  const [notify, setNotify] = useState({
+    visible: false,
+    message: "",
+    type: "",
+  });
 
   let hasFetched = false;
 
   const openPack = async (packId) => {
     if (!session) {
-      alert("Musíte být přihlášeni, abyste mohli otevřít balíček.");
+      setNotify({
+        visible: true,
+        message: "Nejprve se přihlašte!",
+        type: "error",
+      });
+
+      setTimeout(() => {
+        setNotify({ ...notify, visible: false });
+      }, 5000);
       return;
     }
 
@@ -31,8 +46,33 @@ export default function Pack({ userId }) {
       const data = await response.json();
       setCards(data.cards);
       setOpened(true);
+      saveCards(data);
     }
   };
+
+  const saveCards = async (cards) => {
+    const response = await fetch("/api/save-cards", {
+      method: "POST",
+      body: JSON.stringify({ cards }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    const data = await response.json();
+
+    console.log(data);
+
+    setNotify({
+      visible: true,
+      message: data.error ? data.error : data.message,
+      type: data.error ? "error" : "success",
+    });
+
+    setTimeout(() => {
+      setNotify({ ...notify, visible: false });
+    }, 5000);
+  }
 
   const fetchPacks = async () => {
     if (hasFetched) return;
@@ -50,14 +90,15 @@ export default function Pack({ userId }) {
       console.log(data);
       setPacks(data);
     }
-  }
+  };
 
   useEffect(() => {
     fetchPacks();
   }, []);
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+    <div className="absolute inset-0 flex items-center justify-center gap-4 pointer-events-none">
+      {notify.visible && ( <Notify message={notify.message} type={notify.type} />)}
       {!opened ? (
         <>
           {packs.map((pack, _) => (
@@ -83,9 +124,10 @@ export default function Pack({ userId }) {
       ) : (
         <>
           <div className="flex flex-col items-center pointer-events-auto">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-10 gap-4">
               {cards.map((card, index) => (
                 <Tilt
+                  // key={card.id}
                   tiltMaxAngleX={20}
                   tiltMaxAngleY={20}
                   perspective={1000}
@@ -98,14 +140,48 @@ export default function Pack({ userId }) {
                 >
                   <motion.div
                     key={card.id}
-                    className={`w-32 h-48 p-4 flex items-center justify-center text-white font-bold text-lg rounded-lg shadow-lg ${card.rarity_name === "Legendary" ? "bg-amber-400" : card.rarity_name === "Rare" ? "bg-blue-500" : "bg-gray-500"}`}
+                    className={`w-32 h-48 p-4 flex items-center justify-center text-white font-bold text-lg rounded-lg shado`}
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.3 }}
                   >
                     <div className="text-center">
-                      {card.card_name}
-                      <div className="text-sm text-gray-200">Kolekce: {card.collection_name}</div>
+                      {/* {card.card_name}
+                      <div className="text-sm text-gray-200">Kolekce: {card.collection_name}</div> */}
+                      
+                      {/* Obrázek karty */}
+                      <img 
+                        src={card.card_image}
+                        alt={`${card.card_name} Image`}
+                        className="absolute inset-0 w-full h-full object-cover rounded-lg pointer-events-none"
+                      />
+
+                      {/* Rámeček */}
+                      <img
+                        src={card.frame_image}
+                        alt={`${card.card_name} Frame`}
+                        className="absolute inset-0 w-full h-full object-cover rounded-lg pointer-events-none"
+                      />
+
+                      {/* Ikona */}
+                      <img
+                        src={card.icon_image}
+                        alt={`${card.card_name} Icon`}
+                        className="absolute inset-0 w-full h-full object-cover rounded-lg pointer-events-none"
+                      />
+
+                      {/* Plate */}
+                      <img
+                        src="/images/Plates/Cars/Plate_empty.png"
+                        alt={`${card.card_name} Icon`}
+                        className="absolute inset-0 w-full h-full object-cover rounded-lg pointer-events-none"
+                      />
+
+                      {/* Textový popis karty */}
+                      <div className="relative text-center z-10 mt-30">
+                        <div className="text-xs">{card.card_name}</div>
+                        <div className="text-xs text-gray-200">Kolekce: {card.collection_name}</div>
+                      </div>
                     </div>
                   </motion.div>
                 </Tilt>
