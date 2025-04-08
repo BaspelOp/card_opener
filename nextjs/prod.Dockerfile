@@ -9,7 +9,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json .npmrc ./
-RUN npm ci --audit=false --fund=false
+RUN npm ci
 
 
 
