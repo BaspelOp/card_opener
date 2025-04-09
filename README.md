@@ -15,7 +15,7 @@
 - [x] v databázovém serveru bude vytvořen uživatel s potřebnými právy pouze k databázovým objektům, které pro správný běh aplikace potřebuje – tzn. root (admin) účet nebude aplikací používán, vč. omezení přístupu pouze z potřebné IP adresy
 - [x] doporučené rozjetí projektu v Dockeru pomocí docker-compose – bude zajištěna inicializace struktury databáze a nahrání dat při startu
 - [x] verzování vývoje pomocí Gitu
-- [ ] vhodným způsobem zajistit ukládání obrázků, které budou v aplikaci načteny a zobrazeny
+- [x] vhodným způsobem zajistit ukládání obrázků, které budou v aplikaci načteny a zobrazeny
 - [ ] aplikace bude využívat minimálně 2 plnohodnotné formuláře (např. ošetření vstupních polí, apod.) pro vytváření nebo modifikaci dat v tabulkách
 
 ## Commands
