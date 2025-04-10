@@ -18,7 +18,7 @@ export default function ProfileComponent() {
 
         hasFetched = true;
 
-        const response = await fetch("/api/user-data", { // Předpokládaný endpoint pro načtení karet uživatele
+        const response = await fetch("/api/user-data", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -90,8 +90,8 @@ export default function ProfileComponent() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex justify-center items-center"> {/* Změna justify-center na items-center */}
-            <div className="bg-white shadow-xl rounded-lg p-8 w-full max-w-3xl"> {/* Změna max-w-md na max-w-lg pro větší šířku */}
+        <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex justify-center items-center">
+            <div className="bg-white shadow-xl rounded-lg p-8 w-full max-w-3xl">
                 <div className="flex justify-center mb-6">
                     <img src="/avatar.png" alt="Avatar" className="rounded-full w-32 h-32 object-cover border-4 border-indigo-300 shadow-md" />
                 </div>

@@ -43,8 +43,6 @@ export default function Home() {
                 <FaUserCircle className="mr-2" /> Registrovat se
             </Link>
         )}
-
-        {/* Další odkazy můžete přidat zde */}
       </section>
     </div>
   );

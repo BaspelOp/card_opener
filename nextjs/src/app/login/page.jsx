@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import Notify from "@/components/Notify";
-import { FaUser, FaLock } from "react-icons/fa"; // Import ikon
+import { FaUser, FaLock } from "react-icons/fa";
 
 export default function Login() {
   const [formData, setFormData] = useState({
