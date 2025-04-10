@@ -1,8 +1,8 @@
-import NextAuth from "next-auth"
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import PostgresAdapter from "@auth/pg-adapter";
 import pool from "@/lib/db";
- 
+
 export const { auth, handlers, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   adapter: PostgresAdapter(pool),
@@ -11,32 +11,42 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     CredentialsProvider({
       name: "Sign in",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "uzivatel@email.com" },
-        password: { label: "Heslo", type: "password" },
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "uzivatel@email.com"
+        },
+        password: { label: "Heslo", type: "password" }
       },
       async authorize(credentials) {
         const { email, password } = credentials;
         const client = await pool.connect();
         const queryResult = await client.query(
-          'SELECT login($1, $2) AS result', 
+          "SELECT login($1, $2) AS result",
           [JSON.stringify(email), password]
         );
         const result = queryResult.rows[0]?.result;
-        
+
         const addInfoResult = await client.query(
-          'SELECT id, username FROM users WHERE email = $1',
+          "SELECT id, username FROM users WHERE email = $1",
           [JSON.stringify(email)]
-        )
+        );
 
         const infoResult = addInfoResult.rows[0];
 
         client.release();
-        
+
         if (!result || !result.success) {
           return false;
         }
-        
-        return { databaseId: infoResult.id, email, message: result.message, role: result.role, username: infoResult.username };
+
+        return {
+          databaseId: infoResult.id,
+          email,
+          message: result.message,
+          role: result.role,
+          username: infoResult.username
+        };
       }
     })
   ],
@@ -45,7 +55,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     error: "/login",
     verifyRequest: "/login",
     newUser: "/register",
-    profile: "/profile",
+    profile: "/profile"
   },
   callbacks: {
     async signIn({ user, _account, _profile, _email, _credentials }) {
@@ -54,7 +64,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       }
       return true;
     },
-    async jwt({ token, user}) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -76,14 +86,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/profile');
-      
+      const isOnDashboard = nextUrl.pathname.startsWith("/profile");
+
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false;
       }
-      
+
       return true;
     }
-  },
-})
+  }
+});

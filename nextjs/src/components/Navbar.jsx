@@ -8,7 +8,7 @@ const NavBar = () => {
   const [opened, setOpened] = useState(false);
   const { data: session, status } = useSession();
   const isLoggedIn = status === "authenticated";
-  
+
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-800 fixed w-full top-0 left-0 z-50">
       <div className="max-w-(--breakpoint-xl) flex flex-wrap items-center justify-between mx-auto p-4">

@@ -15,7 +15,7 @@ export default function Pack() {
   const [notify, setNotify] = useState({
     visible: false,
     message: "",
-    type: "",
+    type: ""
   });
 
   let hasFetched = false;
@@ -25,7 +25,7 @@ export default function Pack() {
       setNotify({
         visible: true,
         message: "Nejprve se přihlašte!",
-        type: "error",
+        type: "error"
       });
 
       setTimeout(() => {
@@ -66,13 +66,13 @@ export default function Pack() {
     setNotify({
       visible: true,
       message: data.error ? data.error : data.message,
-      type: data.error ? "error" : "success",
+      type: data.error ? "error" : "success"
     });
 
     setTimeout(() => {
       setNotify({ ...notify, visible: false });
     }, 5000);
-  }
+  };
 
   const fetchPacks = async () => {
     if (hasFetched) return;
@@ -83,7 +83,7 @@ export default function Pack() {
       headers: {
         "Content-Type": "application/json"
       }
-    })
+    });
 
     if (response.ok) {
       const data = await response.json();
@@ -98,28 +98,30 @@ export default function Pack() {
 
   return (
     <div className="absolute inset-0 flex items-center justify-center gap-4 pointer-events-none">
-      {notify.visible && ( <Notify message={notify.message} type={notify.type} />)}
+      {notify.visible && <Notify message={notify.message} type={notify.type} />}
       {!opened ? (
         <>
           {packs.map((pack, _) => (
-          <motion.div
-            key={pack.id}
-            className="w-48 h-64 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg cursor-pointer pointer-events-auto"
-            // style={{
-            //   backgroundImage: `url(${image_path})`,
-            //   backgroundSize: "cover",
-            //   backgroundPosition: "center"
-            // }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => openPack(pack.id)}
-          >
-            <div className="text-center">
-              {pack.name}
-              <div className="text-sm text-gray-200">Počet karet: {pack.number_of_cards}</div>
-            </div>
-          </motion.div>
-        ))}
+            <motion.div
+              key={pack.id}
+              className="w-48 h-64 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg cursor-pointer pointer-events-auto"
+              // style={{
+              //   backgroundImage: `url(${image_path})`,
+              //   backgroundSize: "cover",
+              //   backgroundPosition: "center"
+              // }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => openPack(pack.id)}
+            >
+              <div className="text-center">
+                {pack.name}
+                <div className="text-sm text-gray-200">
+                  Počet karet: {pack.number_of_cards}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </>
       ) : (
         <>
@@ -132,7 +134,11 @@ export default function Pack() {
                   tiltMaxAngleY={20}
                   perspective={1000}
                   scale={1.05}
-                  glareEnable={card.rarity_name === "Mythical" || card.rarity_name === "Legendary" || card.holo}
+                  glareEnable={
+                    card.rarity_name === "Mythical" ||
+                    card.rarity_name === "Legendary" ||
+                    card.holo
+                  }
                   glareMaxOpacity={0.45}
                   glareColor="white"
                   glarePosition="all"
@@ -148,9 +154,9 @@ export default function Pack() {
                     <div className="text-center">
                       {/* {card.card_name}
                       <div className="text-sm text-gray-200">Kolekce: {card.collection_name}</div> */}
-                      
+
                       {/* Obrázek karty */}
-                      <img 
+                      <img
                         src={card.card_image}
                         alt={`${card.card_name} Image`}
                         className="absolute inset-0 w-full h-full object-cover rounded-lg pointer-events-none"
@@ -180,7 +186,9 @@ export default function Pack() {
                       {/* Textový popis karty */}
                       <div className="relative text-center z-10 mt-30">
                         <div className="text-xs">{card.card_name}</div>
-                        <div className="text-xs text-gray-200">Kolekce: {card.collection_name}</div>
+                        <div className="text-xs text-gray-200">
+                          Kolekce: {card.collection_name}
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -188,14 +196,14 @@ export default function Pack() {
               ))}
             </div>
             <button
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 hover:cursor-pointer"
-                onClick={() => {
-                  setOpened(false);
-                  setCards([]);
-                }}
-              >
-                Zpět na balíčky
-              </button>
+              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 hover:cursor-pointer"
+              onClick={() => {
+                setOpened(false);
+                setCards([]);
+              }}
+            >
+              Zpět na balíčky
+            </button>
           </div>
         </>
       )}

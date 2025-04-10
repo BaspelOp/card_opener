@@ -7,24 +7,24 @@ export default function Register() {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
-    password: "",
-  })
+    password: ""
+  });
 
   const [loading, setLoading] = useState(false);
 
   const [notify, setNotify] = useState({
     visible: false,
     message: "",
-    type: "",
+    type: ""
   });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
-  
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -33,7 +33,7 @@ export default function Register() {
       const response = await fetch("/api/register", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(formData)
       });
@@ -42,15 +42,17 @@ export default function Register() {
 
       setNotify({
         visible: true,
-        message: response.ok ? data.message : data.error || "Registrace selhala!",
-        type: response.ok ? "success" : "error",
-      })
+        message: response.ok
+          ? data.message
+          : data.error || "Registrace selhala!",
+        type: response.ok ? "success" : "error"
+      });
     } catch (err) {
       console.error(err);
       setNotify({
         visible: true,
         message: "Chyba při odesílání požadavku",
-        type: "error",
+        type: "error"
       });
 
       setTimeout(() => {
@@ -60,7 +62,7 @@ export default function Register() {
 
     setLoading(false);
   };
-  
+
   return (
     <>
       {notify.visible && <Notify message={notify.message} type={notify.type} />}
@@ -83,7 +85,7 @@ export default function Register() {
               <div className="mt-2">
                 <input
                   id="username"
-                  name="username" 
+                  name="username"
                   type="text"
                   required
                   autoComplete="username"

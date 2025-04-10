@@ -74,8 +74,8 @@ export default function Notify({ message, type }) {
           type === "success"
             ? "text-green-500 bg-green-100 dark:bg-green-800 dark:text-green-200"
             : type === "error"
-            ? "text-red-500 bg-red-100 dark:bg-red-800 dark:text-red-200"
-            : "text-orange-500 bg-orange-100 dark:bg-orange-700 dark:text-orange-200"
+              ? "text-red-500 bg-red-100 dark:bg-red-800 dark:text-red-200"
+              : "text-orange-500 bg-orange-100 dark:bg-orange-700 dark:text-orange-200"
         } rounded-lg`}
       >
         {getIcon()}
@@ -85,7 +85,11 @@ export default function Notify({ message, type }) {
       <div className="ms-3 text-sm font-normal">{message}</div>
       <div
         className={`absolute bottom-0 left-0 h-[4px] ${
-          type === "success" ? "bg-green-500" : type === "error" ? "bg-red-500" : "bg-orange-500"
+          type === "success"
+            ? "bg-green-500"
+            : type === "error"
+              ? "bg-red-500"
+              : "bg-orange-500"
         } transition-all duration-[100ms]`}
         style={{ width: `${progress}%` }}
       ></div>

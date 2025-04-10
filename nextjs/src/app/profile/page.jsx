@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect } from "react";
 
@@ -20,13 +20,13 @@ export default function ProfileComponent() {
       headers: {
         "Content-Type": "application/json"
       }
-    })
+    });
 
     if (!response.ok) return;
 
     const data = await response.json();
     console.log("User data:", data);
-  }
+  };
 
   useEffect(() => {
     loadUserData();
@@ -49,7 +49,9 @@ export default function ProfileComponent() {
         <button
           onClick={() => signIn()}
           className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-500 hover:cursor-pointer focus-visible:outline-indigo-600"
-        >Přihlásit se</button>
+        >
+          Přihlásit se
+        </button>
       </div>
     );
   }
@@ -63,7 +65,9 @@ export default function ProfileComponent() {
 
             <div className="w-full text-left">
               <p className="text-gray-600 text-2xl">Jméno:</p>
-              <p className="text-lg font-medium">{session.user.username || "Neznámé jméno"}</p>
+              <p className="text-lg font-medium">
+                {session.user.username || "Neznámé jméno"}
+              </p>
             </div>
 
             <div className="w-full text-left">
@@ -82,7 +86,7 @@ export default function ProfileComponent() {
               <div className="w-full flex justify-center mb-4">
                 <div className="w-32 h-[2px] bg-gray-600" />
               </div>
-              <button 
+              <button
                 disabled={status === "loading"}
                 onClick={() => signOut()}
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-500 hover:cursor-pointer focus-visible:outline-red-600"
@@ -109,12 +113,16 @@ export default function ProfileComponent() {
                 </div>
               )}
             </div> */}
-            <div>
-              <p className="text-gray-600 text-2xl">Balíčky:</p>
-              <p className="text-lg font-medium">Zde budou vaše balíčky a karty.</p>
-              <p className="text-lg font-medium">Zatím žádné nemáte.</p>
-              <p className="text-lg font-medium">Pokud chcete nějaké mít, otevřete si je.</p>
-            </div>
+          <div>
+            <p className="text-gray-600 text-2xl">Balíčky:</p>
+            <p className="text-lg font-medium">
+              Zde budou vaše balíčky a karty.
+            </p>
+            <p className="text-lg font-medium">Zatím žádné nemáte.</p>
+            <p className="text-lg font-medium">
+              Pokud chcete nějaké mít, otevřete si je.
+            </p>
+          </div>
         </div>
       </div>
     </>

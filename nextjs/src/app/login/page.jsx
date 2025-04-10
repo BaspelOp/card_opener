@@ -6,10 +6,9 @@ import Link from "next/link";
 import Notify from "@/components/Notify";
 
 export default function Login() {
-
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
+    password: ""
   });
 
   const [loading, setLoading] = useState(false);
@@ -17,13 +16,13 @@ export default function Login() {
   const [notify, setNotify] = useState({
     visible: false,
     message: "",
-    type: "",
+    type: ""
   });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     });
   };
 
@@ -32,18 +31,18 @@ export default function Login() {
 
     setLoading(true);
 
-    const result = await signIn('credentials', {
+    const result = await signIn("credentials", {
       email: formData.email,
       password: formData.password,
       redirect: true,
-      callbackUrl: "/profile",
+      callbackUrl: "/profile"
     });
 
     if (result.error === "CredentialsSignin") {
       setNotify({
         visible: true,
         message: "Neplatný email nebo heslo.",
-        type: "error",
+        type: "error"
       });
       return;
     }
@@ -77,7 +76,7 @@ export default function Login() {
               <div className="mt-2">
                 <input
                   id="email"
-                  name="email" 
+                  name="email"
                   type="email"
                   required
                   autoComplete="email"

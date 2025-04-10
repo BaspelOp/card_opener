@@ -8,13 +8,16 @@ export async function POST(request) {
 
   try {
     if (!userId || !packId) {
-      return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing parameters" },
+        { status: 400 }
+      );
     }
 
     const client = await pool.connect();
 
     const result = await client.query(
-      'SELECT get_random_cards_from_package($1) AS result',
+      "SELECT get_random_cards_from_package($1) AS result",
       [packId]
     );
 
