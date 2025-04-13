@@ -9,10 +9,14 @@ import { FaUser, FaLock } from "react-icons/fa";
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
+    password: ""
   });
   const [loading, setLoading] = useState(false);
-  const [notify, setNotify] = useState({ visible: false, message: "", type: "" });
+  const [notify, setNotify] = useState({
+    visible: false,
+    message: "",
+    type: ""
+  });
 
   const handleNotify = (message, type) => {
     setNotify({ visible: true, message, type });
@@ -31,7 +35,7 @@ export default function Login() {
       email: formData.email,
       password: formData.password,
       redirect: true,
-      callbackUrl: "/profile",
+      callbackUrl: "/profile"
     });
 
     if (result?.error === "CredentialsSignin") {
@@ -61,7 +65,10 @@ export default function Login() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaUser className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                  <FaUser
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
                 </div>
                 <input
                   id="email"
@@ -82,7 +89,10 @@ export default function Login() {
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FaLock className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                  <FaLock
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
                 </div>
                 <input
                   id="password"
@@ -101,7 +111,10 @@ export default function Login() {
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <Link href="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <Link
+                href="/forgot-password"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
                 Zapomenuté heslo?
               </Link>
             </div>
@@ -115,9 +128,24 @@ export default function Login() {
             >
               {loading ? (
                 <span className="animate-spin">
-                  <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V1a1 1 0 012 0v3a8 8 0 018 8h3a1 1 0 110 2h-3a8 8 0 01-8 8v3a1 1 0 11-2 0v-3a8 8 0 01-8-8H1a1 1 0 010-2h3z"></path>
+                  <svg
+                    className="h-5 w-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V1a1 1 0 012 0v3a8 8 0 018 8h3a1 1 0 110 2h-3a8 8 0 01-8 8v3a1 1 0 11-2 0v-3a8 8 0 01-8-8H1a1 1 0 010-2h3z"
+                    ></path>
                   </svg>
                 </span>
               ) : (
@@ -129,7 +157,10 @@ export default function Login() {
 
         <p className="mt-6 text-center text-sm text-gray-500">
           Nemáte účet?{" "}
-          <Link href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+          <Link
+            href="/register"
+            className="font-medium text-indigo-600 hover:text-indigo-500"
+          >
             Registrace
           </Link>
         </p>

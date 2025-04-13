@@ -40,7 +40,7 @@ export async function GET(_) {
             oc.user_id = $1
         ORDER BY
             col.name;
-    `
+    `;
 
     const result = await client.query(query, [databaseId]);
     client.release();
@@ -49,7 +49,7 @@ export async function GET(_) {
       return NextResponse.json({ error: "No cards found" }, { status: 404 });
     }
 
-    const cards = result.rows.map(row => ({
+    const cards = result.rows.map((row) => ({
       card_name: row.card_name,
       card_image_path: row.card_image_path,
       collection_name: row.collection_name,
@@ -58,7 +58,7 @@ export async function GET(_) {
       icon_image_path: row.icon_image_path,
       rarity_name: row.rarity_name,
       rarity_id: row.rarity_id,
-      card_quantity: row.card_quantity,
+      card_quantity: row.card_quantity
     }));
 
     return NextResponse.json(cards, { status: 200 });

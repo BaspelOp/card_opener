@@ -59,7 +59,10 @@ export default function Pack() {
 
     const data = await response.json();
 
-    handleNotify(data.error ? data.error : data.message, data.error ? "error" : "success")
+    handleNotify(
+      data.error ? data.error : data.message,
+      data.error ? "error" : "success"
+    );
   };
 
   const fetchPacks = async () => {
@@ -100,7 +103,9 @@ export default function Pack() {
                 key={pack.id}
                 className="w-60 h-80 rounded-xl shadow-lg overflow-hidden cursor-pointer pointer-events-auto transform transition-transform hover:scale-105"
                 style={{
-                  backgroundImage: pack.image_path ? `url(${pack.image_path})` : "linear-gradient(to bottom right, #a855f7, #8b5cf6)",
+                  backgroundImage: pack.image_path
+                    ? `url(${pack.image_path})`
+                    : "linear-gradient(to bottom right, #a855f7, #8b5cf6)",
                   backgroundSize: "cover",
                   backgroundPosition: "center"
                 }}
@@ -110,14 +115,15 @@ export default function Pack() {
               >
                 <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-white">
                   <h3 className="font-bold text-xl mb-3">{pack.name}</h3>
-                  <div className="text-sm text-gray-300">Obsahuje {pack.number_of_cards} karet</div>
+                  <div className="text-sm text-gray-300">
+                    Obsahuje {pack.number_of_cards} karet
+                  </div>
                   <motion.div
                     className="absolute bottom-4 w-full px-4"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.3, delay: 0.2 }}
-                  >
-                  </motion.div>
+                  ></motion.div>
                 </div>
               </motion.div>
             ))}
@@ -129,7 +135,9 @@ export default function Pack() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl font-semibold text-gray-800 py-12">Otevřené karty:</h2>
+            <h2 className="text-3xl font-semibold text-gray-800 py-12">
+              Otevřené karty:
+            </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
               {cards.map((card, index) => (
                 <Tilt
@@ -175,10 +183,16 @@ export default function Pack() {
                       className="absolute inset-0 w-full h-full object-cover"
                     />
                     <div className="absolute bottom-0 left-0 right-0 text-white text-center py-3">
-                      <div className="text-sm font-semibold">{card.card_name}</div>
-                      <div className="text-xs text-gray-300">Kolekce: {card.collection_name}</div>
+                      <div className="text-sm font-semibold">
+                        {card.card_name}
+                      </div>
+                      <div className="text-xs text-gray-300">
+                        Kolekce: {card.collection_name}
+                      </div>
                       {card.rarity_name && (
-                        <div className="text-xs text-yellow-400">Rarita: {card.rarity_name}</div>
+                        <div className="text-xs text-yellow-400">
+                          Rarita: {card.rarity_name}
+                        </div>
                       )}
                     </div>
                   </motion.div>
