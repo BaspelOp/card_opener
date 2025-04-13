@@ -66,7 +66,7 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: example@example.com
       PGADMIN_DEFAULT_PASSWORD: example
-    image: dpage/pgadmin4:9.1
+    image: dpage/pgadmin4:9.2
     networks:
       main:
         ipv4_address: 192.168.0.4
