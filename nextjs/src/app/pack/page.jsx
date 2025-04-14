@@ -78,7 +78,6 @@ export default function Pack() {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       setPacks(data);
     }
   };

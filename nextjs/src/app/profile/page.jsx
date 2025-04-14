@@ -31,7 +31,6 @@ export default function ProfileComponent() {
     if (!response.ok) return;
 
     const data = await response.json();
-    console.log("User cards data:", data);
     setUserData(data);
   };
 

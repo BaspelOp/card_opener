@@ -15,7 +15,6 @@ const NavBar = () => {
   const [activeLink, setActiveLink] = useState(() => router.pathname);
 
   useEffect(() => {
-    console.log("Router pathname changed:", router.pathname);
     setActiveLink(router.pathname);
   }, [router.pathname]);
 
