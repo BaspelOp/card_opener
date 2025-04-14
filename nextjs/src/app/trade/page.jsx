@@ -137,7 +137,7 @@ export default function Trade() {
         fetchAllUsers();
         fetchOutgoingOffers();
         fetchIncomingOffers();
-    }, []);
+    }, [session]);
 
     const createNewOffer = async (e) => {
         e.preventDefault();
@@ -179,6 +179,7 @@ export default function Trade() {
 
         const data = response.json();
         handleNotify(data.error ? data.error : data.message, data.error ? "error" : "success")
+        setOutgoingOffers(prevOffers => prevOffers.filter(offer => offer.id !== offerId));
     };
 
     const handleAcceptOffer = async (offerId) => {
@@ -196,6 +197,7 @@ export default function Trade() {
 
         const data = response.json();
         handleNotify(data.error ? data.error : data.message, data.error ? "error" : "success")
+        setIncomingOffers(prevOffers => prevOffers.filter(offer => offer.id !== offerId));
     };
 
     const handleCreateNewOfferClick = () => {
