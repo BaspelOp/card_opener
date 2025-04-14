@@ -16,6 +16,7 @@ export async function GET(_) {
     const query = `
         SELECT
             c.name AS card_name,
+            c.id AS card_id,
             oc.quantity AS card_quantity,
             c.image_path AS card_image_path,
             col.name AS collection_name,
@@ -58,7 +59,8 @@ export async function GET(_) {
       icon_image_path: row.icon_image_path,
       rarity_name: row.rarity_name,
       rarity_id: row.rarity_id,
-      card_quantity: row.card_quantity
+      card_quantity: row.card_quantity,
+      card_id: row.card_id,
     }));
 
     return NextResponse.json(cards, { status: 200 });
