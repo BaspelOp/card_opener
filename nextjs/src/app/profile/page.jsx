@@ -10,14 +10,14 @@ import {
 } from "react-icons/fa";
 
 export default function ProfileComponent() {
-    const [userData, setUserData] = useState(null);
-    const [expandedCollections, setExpandedCollections] = useState({});
-    const { data: session, status } = useSession();
-    let hasFetched = false;
+  const [userData, setUserData] = useState(null);
+  const [expandedCollections, setExpandedCollections] = useState({});
+  const { data: session, status } = useSession();
+  let hasFetched = false;
 
-    const loadUserData = async () => {
-        if (hasFetched) return;
-        if (!session) return;
+  const loadUserData = async () => {
+    if (hasFetched) return;
+    if (!session) return;
 
     hasFetched = true;
 
@@ -60,33 +60,33 @@ export default function ProfileComponent() {
     }, {});
   };
 
-    const groupedCards = groupCardsByCollection(userData);
+  const groupedCards = groupCardsByCollection(userData);
 
-    if (status === "loading") {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
-                <p className="text-lg font-semibold text-indigo-700">Načítání profilu...</p>
-            </div>
-        );
-    }
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex items-center justify-center">
+        <p className="text-lg font-semibold text-indigo-700">
+          Načítání profilu...
+        </p>
+      </div>
+    );
+  }
 
-    if (status === "unauthenticated") {
-        return (
-            <div
-                className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex flex-col items-center justify-center"
-            >
-                <p className="text-lg font-semibold text-red-500 mb-4">
-                    Nejste přihlášeni. Pro zobrazení profilu se prosím přihlaste.
-                </p>
-                <button
-                    onClick={() => signIn()}
-                    className="px-6 py-3 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus-visible:outline-indigo-600 shadow-md flex items-center hover:cursor-pointer transition duration-200 ease-in-out"
-                >
-                    <FaUserCircle className="inline-block mr-2" /> Přihlásit se
-                </button>
-            </div>
-        );
-    }
+  if (status === "unauthenticated") {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex flex-col items-center justify-center">
+        <p className="text-lg font-semibold text-red-500 mb-4">
+          Nejste přihlášeni. Pro zobrazení profilu se prosím přihlaste.
+        </p>
+        <button
+          onClick={() => signIn()}
+          className="px-6 py-3 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus-visible:outline-indigo-600 shadow-md flex items-center hover:cursor-pointer transition duration-200 ease-in-out"
+        >
+          <FaUserCircle className="inline-block mr-2" /> Přihlásit se
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex justify-center items-center">

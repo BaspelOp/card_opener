@@ -4,7 +4,6 @@ import pool from "@/lib/db";
 export async function POST(request) {
   const { userId, packId } = await request.json();
 
-
   try {
     if (!userId || !packId) {
       return NextResponse.json(
@@ -21,7 +20,6 @@ export async function POST(request) {
     );
 
     const cardIds = result.rows[0]?.result;
-
 
     if (!cardIds || cardIds.length === 0) {
       return NextResponse.json({ error: "No cards found" }, { status: 404 });
@@ -56,7 +54,6 @@ export async function POST(request) {
     const detailedCards = cardIds.map((id) => detailedCardsMap.get(id));
 
     client.release();
-
 
     return NextResponse.json({ cards: detailedCards }, { status: 200 });
   } catch (err) {

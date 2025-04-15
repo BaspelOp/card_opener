@@ -51,7 +51,6 @@ export default function Register() {
       setTimeout(() => {
         window.location.href = "/login";
       }, 2000);
-
     } catch (err) {
       console.error(err);
       handleNotify("Chyba při odesílání požadavku", "error");

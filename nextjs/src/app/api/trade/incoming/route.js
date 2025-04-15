@@ -1,19 +1,19 @@
-import { NextResponse } from 'next/server';
-import pool from '@/lib/db';
-import { auth } from '@/auth';
+import { NextResponse } from "next/server";
+import pool from "@/lib/db";
+import { auth } from "@/auth";
 
 export async function GET() {
-    try {
-        const session = await auth();
+  try {
+    const session = await auth();
 
-        if (!session) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-        const databaseId = session.user.databaseId;
-        const client = await pool.connect();
+    const databaseId = session.user.databaseId;
+    const client = await pool.connect();
 
-        const query = `
+    const query = `
             SELECT
                 t.id,
                 t.uuid,
@@ -50,42 +50,45 @@ export async function GET() {
             JOIN card_rarities cr_wanted ON c_wanted.rarity_id = cr_wanted.id
             
             WHERE t.to_user_id = $1;
-        `
+        `;
 
-        const result = await client.query(query, [databaseId]);
-        client.release();
+    const result = await client.query(query, [databaseId]);
+    client.release();
 
-        if (result.rows.length === 0) {
-            return NextResponse.json({ error: 'No trades found' }, { status: 404 });
-        }
-
-        const trades = result.rows.map(row => ({
-            id: row.id,
-            uuid: row.uuid,
-            from_username: row.from_username,
-            offered_card: {
-                id: row.offered_card_id,
-                name: row.offered_card_name,
-                image_path: row.offered_card_image_path,
-                frame_image_path: row.offered_frame_image_path,
-                icon_image_path: row.offered_icon_image_path,
-                rarity_name: row.offered_rarity_name,
-                rarity_id: row.offered_rarity_id,
-            },
-            wanted_card: {
-                id: row.wanted_card_id,
-                name: row.wanted_card_name,
-                image_path: row.wanted_card_image_path,
-                frame_image_path: row.wanted_frame_image_path,
-                icon_image_path: row.wanted_icon_image_path,
-                rarity_name: row.wanted_rarity_name,
-                rarity_id: row.wanted_rarity_id,
-            },
-        }));
-
-        return NextResponse.json(trades, { status: 200 });
-    } catch (err) {
-        console.error('Error in API:', err);
-        return NextResponse.json({ error: 'Failed to fetch trades' }, { status: 500 });
+    if (result.rows.length === 0) {
+      return NextResponse.json({ error: "No trades found" }, { status: 404 });
     }
+
+    const trades = result.rows.map((row) => ({
+      id: row.id,
+      uuid: row.uuid,
+      from_username: row.from_username,
+      offered_card: {
+        id: row.offered_card_id,
+        name: row.offered_card_name,
+        image_path: row.offered_card_image_path,
+        frame_image_path: row.offered_frame_image_path,
+        icon_image_path: row.offered_icon_image_path,
+        rarity_name: row.offered_rarity_name,
+        rarity_id: row.offered_rarity_id
+      },
+      wanted_card: {
+        id: row.wanted_card_id,
+        name: row.wanted_card_name,
+        image_path: row.wanted_card_image_path,
+        frame_image_path: row.wanted_frame_image_path,
+        icon_image_path: row.wanted_icon_image_path,
+        rarity_name: row.wanted_rarity_name,
+        rarity_id: row.wanted_rarity_id
+      }
+    }));
+
+    return NextResponse.json(trades, { status: 200 });
+  } catch (err) {
+    console.error("Error in API:", err);
+    return NextResponse.json(
+      { error: "Failed to fetch trades" },
+      { status: 500 }
+    );
+  }
 }

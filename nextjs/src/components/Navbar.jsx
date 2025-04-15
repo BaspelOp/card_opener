@@ -140,15 +140,15 @@ const NavBar = () => {
             Balíčky
           </Link>
           <Link
-              href="/collection"
-              className={`py-2 px-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition duration-300 ${
-                activeLink === "/collection"
-                  ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300"
-                  : ""
-              }`}
-            >
-              Kolekce
-            </Link>
+            href="/collection"
+            className={`py-2 px-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition duration-300 ${
+              activeLink === "/collection"
+                ? "bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300"
+                : ""
+            }`}
+          >
+            Kolekce
+          </Link>
           <Link
             href="/trade"
             className={`block py-2 px-3 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition duration-300 ${

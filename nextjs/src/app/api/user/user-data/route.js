@@ -60,7 +60,7 @@ export async function GET(_) {
       rarity_name: row.rarity_name,
       rarity_id: row.rarity_id,
       card_quantity: row.card_quantity,
-      card_id: row.card_id,
+      card_id: row.card_id
     }));
 
     return NextResponse.json(cards, { status: 200 });
