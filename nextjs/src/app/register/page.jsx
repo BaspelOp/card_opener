@@ -32,7 +32,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)
@@ -44,8 +44,14 @@ export default function Register() {
         response.ok ? data.message : data.error || "Registrace selhala!",
         response.ok ? "success" : "error"
       );
-      if (response.ok) {
-      }
+
+      if (!response.ok) return;
+
+      setFormData({ username: "", email: "", password: "" });
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+
     } catch (err) {
       console.error(err);
       handleNotify("Chyba při odesílání požadavku", "error");

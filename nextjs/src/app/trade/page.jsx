@@ -85,7 +85,7 @@ export default function Trade() {
         const fetchAllUsers = async () => {
             if (!session) return;
 
-            const response = await fetch('/api/all-users', {
+            const response = await fetch('/api/user/all-users', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

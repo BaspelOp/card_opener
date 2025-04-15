@@ -21,7 +21,7 @@ export default function ProfileComponent() {
 
     hasFetched = true;
 
-    const response = await fetch("/api/user-data", {
+    const response = await fetch("/api/user/user-data", {
       method: "GET",
       headers: {
         "Content-Type": "application/json"

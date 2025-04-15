@@ -32,7 +32,7 @@ export default function Pack() {
       return handleNotify("Nejprve se přihlašte!", "error");
     }
 
-    const response = await fetch("/api/open-pack", {
+    const response = await fetch("/api/pack/open-pack", {
       method: "POST",
       body: JSON.stringify({ userId: session.user.id, packId }),
       headers: {
@@ -49,7 +49,7 @@ export default function Pack() {
   };
 
   const saveCards = async (cards) => {
-    const response = await fetch("/api/save-cards", {
+    const response = await fetch("/api/user/save-cards", {
       method: "POST",
       body: JSON.stringify({ cards }),
       headers: {
@@ -69,7 +69,7 @@ export default function Pack() {
     if (hasFetched) return;
     hasFetched = true;
 
-    const response = await fetch("api/get-packs", {
+    const response = await fetch("api/pack/get-packs", {
       method: "GET",
       headers: {
         "Content-Type": "application/json"
