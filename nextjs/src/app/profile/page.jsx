@@ -1,5 +1,7 @@
 "use client";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { motion } from "framer-motion";
+import Tilt from "react-parallax-tilt";
 import { useEffect, useState } from "react";
 import {
   FaUserCircle,
@@ -36,7 +38,7 @@ export default function ProfileComponent() {
 
   useEffect(() => {
     loadUserData();
-  }, []);
+  }, [session]);
 
   const toggleCollection = (collectionId) => {
     setExpandedCollections((prevState) => ({
@@ -137,49 +139,74 @@ export default function ProfileComponent() {
                     {expandedCollections[collectionId] && (
                       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 mt-2">
                         {Object.values(collectionData.cards).map((card) => (
-                          <div
-                            key={card.card_name}
-                            className="relative w-24 h-36 rounded-md shadow-md overflow-hidden"
+                          <Tilt
+                            key={card.id}
+                            tiltMaxAngleX={10}
+                            tiltMaxAngleY={10}
+                            perspective={500}
+                            scale={1.02}
+                            glareEnable={
+                              card.rarity_name === "Rare" ||
+                              card.rarity_name === "Mythical" ||
+                              card.rarity_name === "Legendary" ||
+                              card.holo
+                            }
+                            glareMaxOpacity={0.3}
+                            glareColor={
+                              card.rarity_name === "Rare" ? "blue" :
+                              card.rarity_name === "Mythical" ? "purple" :
+                              card.rarity_name === "Legendary" ? "yellow" :
+                              undefined
+                            }
+                            glarePosition="all"
+                            transitionSpeed={200}
                           >
-                            <img
-                              src={card.card_image_path}
-                              alt={card.card_name}
-                              className="absolute inset-0 w-full h-full object-cover"
-                            />
-                            <img
-                              src={card.frame_image_path}
-                              alt={`${card.card_name} Frame`}
-                              className="absolute inset-0 w-full h-full object-cover"
-                            />
-                            <img
-                              src={card.icon_image_path}
-                              alt={`${card.card_name} Icon`}
-                              className="absolute inset-0 w-full h-full object-cover"
-                            />
-                            <img
-                              src="/images/Plates/Cars/Plate_empty.png"
-                              alt={`${card.card_name} Plate`}
-                              className="absolute inset-0 w-full h-full object-cover"
-                            />
-                            <div className="absolute bottom-0 left-0 right-0 text-white text-center py-2">
-                              <div className="text-xs font-semibold truncate">
-                                {card.card_name}
-                              </div>
-                              <div className="text-[0.5rem] text-gray-300 truncate">
-                                Kol: {card.collection_name}
-                              </div>
-                              {card.rarity_name && (
-                                <div className="text-[0.5rem] text-yellow-400 truncate">
-                                  R: {card.rarity_name}
+                            <motion.div
+                              className={`relative w-24 h-36 rounded-md shadow-md overflow-hidden`}
+                              initial={{ opacity: 0, y: -20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 5 * 0.1 }}
+                            >
+                              <img
+                                src={card.card_image_path}
+                                alt={card.card_name}
+                                className="absolute inset-0 w-full h-full object-cover"
+                              />
+                              <img
+                                src={card.frame_image_path}
+                                alt={`${card.card_name} Frame`}
+                                className="absolute inset-0 w-full h-full object-cover"
+                              />
+                              <img
+                                src={card.icon_image_path}
+                                alt={`${card.card_name} Icon`}
+                                className="absolute inset-0 w-full h-full object-cover"
+                              />
+                              <img
+                                src="/images/Plates/Cars/Plate_empty.png"
+                                alt={`${card.card_name} Plate`}
+                                className="absolute inset-0 w-full h-full object-cover"
+                              />
+                              <div className="absolute bottom-0 left-0 right-0 text-white text-center py-2">
+                                <div className="text-xs font-semibold truncate">
+                                  {card.card_name}
                                 </div>
+                                <div className="text-[0.5rem] text-gray-300 truncate">
+                                  Kol: {card.collection_name}
+                                </div>
+                                {card.rarity_name && (
+                                  <div className="text-[0.5rem] text-yellow-400 truncate">
+                                    R: {card.rarity_name}
+                                  </div>
+                                )}
+                              </div>
+                              {card.card_quantity > 1 && (
+                                <span className="absolute top-0 right-0 bg-indigo-500 text-white text-xs font-semibold rounded-full px-2 py-1 shadow-md transform">
+                                  x{card.card_quantity}
+                                </span>
                               )}
-                            </div>
-                            {card.card_quantity > 1 && (
-                              <span className="absolute top-0 right-0 bg-indigo-500 text-white text-xs font-semibold rounded-full px-2 py-1 shadow-md transform">
-                                x{card.card_quantity}
-                              </span>
-                            )}
-                          </div>
+                            </motion.div>
+                          </Tilt>
                         ))}
                       </div>
                     )}

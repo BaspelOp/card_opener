@@ -146,12 +146,18 @@ export default function Pack() {
                   perspective={500}
                   scale={1.02}
                   glareEnable={
+                    card.rarity_name === "Rare" ||
                     card.rarity_name === "Mythical" ||
                     card.rarity_name === "Legendary" ||
                     card.holo
                   }
                   glareMaxOpacity={0.3}
-                  glareColor="white"
+                  glareColor={
+                    card.rarity_name === "Rare" ? "blue" :
+                    card.rarity_name === "Mythical" ? "purple" :
+                    card.rarity_name === "Legendary" ? "yellow" :
+                    undefined
+                  }
                   glarePosition="all"
                   transitionSpeed={200}
                 >

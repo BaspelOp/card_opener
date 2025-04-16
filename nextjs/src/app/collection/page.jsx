@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import Tilt from "react-parallax-tilt";
 import Notify from "@/components/Notify";
 
 export default function Collection() {
@@ -53,7 +55,7 @@ export default function Collection() {
       <div className="container mx-auto px-4">
         <div className="max-h-[70vh] overflow-y-auto pr-2">
           <div className="space-y-4">
-            {collections.map((collection, idx) => (
+            {collections.map((collection, index) => (
               <div
                 key={collection.id}
                 className="bg-white rounded-md shadow-md border p-4"
@@ -63,47 +65,67 @@ export default function Collection() {
                     {collection.name}
                   </span>
                   <button
-                    onClick={() => handleToggle(idx)}
+                    onClick={() => handleToggle(index)}
                     className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold rounded-md shadow-md transition duration-300 ease-in-out hover:cursor-pointer focus-visible:outline-indigo-600"
                   >
                     Náhled
                   </button>
                 </div>
-                {openIndex === idx && (
+                {openIndex === index && (
                   <div className="mt-4">
                     {collection.cards.length > 0 ? (
-                      <div className="flex justify-center flex-wrap gap-10">
+                      <div className="flex justify-center flex-wrap gap-10 ">
                         {collection.cards.map((card) => (
-                          <div
+                          <Tilt
                             key={card.id}
-                            className="flex flex-col items-center justify-end w-[160px] h-[224px] relative bg-transparent p-0 m-0"
+                            tiltMaxAngleX={10}
+                            tiltMaxAngleY={10}
+                            perspective={500}
+                            scale={1.02}
+                            glareEnable={
+                              card.rarity.name === "Rare" ||
+                              card.rarity.name === "Mythical" ||
+                              card.rarity.name === "Legendary" ||
+                              card.holo
+                            }
+                            glareMaxOpacity={0.3}
+                            glareColor={
+                              card.rarity.name === "Rare" ? "blue" :
+                              card.rarity.name === "Mythical" ? "purple" :
+                              card.rarity.name === "Legendary" ? "yellow" :
+                              undefined
+                            }
+                            glarePosition="all"
+                            transitionSpeed={200}
+                            className={`w-[160px] h-[224px]`}
                           >
-                            <div className="relative w-[160px] h-[224px] mb-1">
+                            <motion.div
+                              className={`relative w-[160px] h-[224px] mb-1`}
+                              initial={{ opacity: 0, y: -20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                            >
                               <img
                                 src={card.image_path}
                                 alt={`${card.name} Image`}
                                 className="absolute inset-0 w-[160px] h-[224px] object-contain"
-                                style={{ zIndex: 1 }}
                               />
                               <img
                                 src={card.frame.image_path}
                                 alt={`${card.name} Frame`}
                                 className="absolute inset-0 w-[160px] h-[224px] object-contain"
-                                style={{ zIndex: 2 }}
                               />
                               <img
                                 src={card.icon.image_path}
                                 alt={`${card.name} Icon`}
                                 className="absolute inset-0 w-[160px] h-[224px] object-contain"
-                                style={{ zIndex: 3 }}
                               />
                               <img
                                 src="/images/Plates/Cars/Plate_empty.png"
                                 alt={`${card.name} Plate`}
                                 className="absolute inset-0 w-[160px] h-[224px] object-contain"
-                                style={{ zIndex: 4 }}
                               />
-                              <div className="absolute inset-0 flex flex-col items-center justify-end py-4 w-full z-10">
+                              <div className="absolute inset-0 flex flex-col items-center justify-end py-5 w-full z-10">
                                 <span className="text-[1rem] font-semibold truncate text-white">
                                   {card.name}
                                 </span>
@@ -113,8 +135,8 @@ export default function Collection() {
                                   </span>
                                 )}
                               </div>
-                            </div>
-                          </div>
+                            </motion.div>
+                          </Tilt>
                         ))}
                       </div>
                     ) : (
