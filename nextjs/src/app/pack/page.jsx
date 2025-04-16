@@ -182,11 +182,6 @@ export default function Pack() {
                       alt={`${card.card_name} Icon`}
                       className="absolute inset-0 w-full h-full object-cover"
                     />
-                    <img
-                      src="/images/Plates/Cars/Plate_empty.png"
-                      alt={`${card.card_name} Plate`}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
                     <div className="absolute bottom-0 left-0 right-0 text-white text-center py-3">
                       <div className="text-sm font-semibold">
                         {card.card_name}

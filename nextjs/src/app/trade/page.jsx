@@ -427,11 +427,6 @@ export default function Trade() {
                           alt={`${offer.wanted_card.name} Icon`}
                           className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
                         />
-                        <img
-                          src="/images/Plates/Cars/Plate_empty.png"
-                          alt={`${offer.wanted_card.name} Plate`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
                         <div className="absolute left-0 bottom-0 text-center py-3 w-27">
                           <div className="text-xs font-semibold truncate text-white">
                             {offer.wanted_card.name}
@@ -575,99 +570,6 @@ export default function Trade() {
                           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md text-sm transition duration-300 ease-in-out hover:cursor-pointer focus-visible:outline-red-600"
                         >
                           Odmítnout
-                        </button>
-                      </span>
-                    </li>
-                  ))}
-
-                  {outgoingOffers.map((offer) => (
-                    <li
-                      key={offer.id}
-                      className="px-4 py-3 bg-white hover:bg-gray-100 grid grid-cols-4 gap-4 items-center overflow-hidden"
-                    >
-                      <span className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0">
-                        <img
-                          src={offer.offered_card.image_path}
-                          alt={`${offer.offered_card.name} Image`}
-                          className="relative inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.offered_card.frame_image_path}
-                          alt={`${offer.offered_card.name} Frame`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.offered_card.icon_image_path}
-                          alt={`${offer.offered_card.name} Icon`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src="/images/Plates/Cars/Plate_empty.png"
-                          alt={`${offer.offered_card.name} Plate`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <div className="absolute left-0 bottom-0 text-center py-3 w-27">
-                          <div className="text-xs font-semibold truncate text-white">
-                            {offer.offered_card.name}
-                          </div>
-                          <div className="text-[0.5rem] text-gray-300 truncate">
-                            Kol: {offer.offered_card.collection_name}
-                          </div>
-                          {offer.offered_card.rarity_name && (
-                            <div className="text-[0.5rem] text-yellow-400 truncate">
-                              R: {offer.offered_card.rarity_name}
-                            </div>
-                          )}
-                        </div>
-                      </span>
-                      <span className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0">
-                        <img
-                          src={offer.wanted_card.image_path}
-                          alt={`${offer.wanted_card.name} Image`}
-                          className="relative inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.wanted_card.frame_image_path}
-                          alt={`${offer.wanted_card.name} Frame`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.wanted_card.icon_image_path}
-                          alt={`${offer.wanted_card.name} Icon`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src="/images/Plates/Cars/Plate_empty.png"
-                          alt={`${offer.wanted_card.name} Plate`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <div className="absolute left-0 bottom-0 text-center py-3 w-27">
-                          <div className="text-xs font-semibold truncate text-white">
-                            {offer.wanted_card.name}
-                          </div>
-                          <div className="text-[0.5rem] text-gray-300 truncate">
-                            Kol: {offer.wanted_card.collection_name}
-                          </div>
-                          {offer.wanted_card.rarity_name && (
-                            <div className="text-[0.5rem] text-yellow-400 truncate">
-                              R: {offer.wanted_card.rarity_name}
-                            </div>
-                          )}
-                        </div>
-                      </span>
-                      <span>
-                        <span
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800`}
-                        >
-                          Aktivní
-                        </span>
-                      </span>
-                      <span className="text-right">
-                        <button
-                          onClick={() => handleCancelOffer(offer.id)}
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md text-sm transition duration-300 ease-in-out hover:cursor-pointer focus-visible:outline-red-600"
-                        >
-                          Zrušit
                         </button>
                       </span>
                     </li>
