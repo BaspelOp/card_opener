@@ -31,10 +31,34 @@ INSERT INTO card_icons (name, image_path) VALUES
 
 INSERT INTO cards (name, image_path, collection_id, rarity_id, frame_id, icon_id) VALUES 
 -- Elements
+-- Common (8)
 ('Human Of Water', 'images/Mains/Elements/Common/1.png', 1, 1, 1, 1),
+('Bubble Creature', 'images/Mains/Elements/Common/2.png', 1, 1, 1, 1),
+('River Sprite', 'images/Mains/Elements/Common/3.png', 1, 1, 1, 1),
+('Lake Dweller', 'images/Mains/Elements/Common/4.png', 1, 1, 1, 1),
+('Raindrop Kid', 'images/Mains/Elements/Common/5.png', 1, 1, 1, 1),
+('Fog Wanderer', 'images/Mains/Elements/Common/6.png', 1, 1, 1, 1),
+('Ocean Spirit', 'images/Mains/Elements/Common/7.png', 1, 1, 1, 1),
+('Water Elemental', 'images/Mains/Elements/Common/8.png', 1, 1, 1, 1),
+
+-- Uncommon (5)
 ('Guard Of Water', 'images/Mains/Elements/Uncommon/9.png', 1, 2, 1, 1),
+('Ice Warrior', 'images/Mains/Elements/Uncommon/10.png', 1, 2, 1, 1),
+('Steam Golem', 'images/Mains/Elements/Uncommon/11.png', 1, 2, 1, 1),
+('Swamp Guardian', 'images/Mains/Elements/Uncommon/12.png', 1, 2, 1, 1),
+('Tidecaller', 'images/Mains/Elements/Uncommon/13.png', 1, 2, 1, 1),
+
+-- Rare (4)
 ('Prisoner Of Water', 'images/Mains/Elements/Rare/14.png', 1, 3, 1, 1),
+('Ice Element', 'images/Mains/Elements/Rare/15.png', 1, 3, 1, 1),
+('Aqua Mage', 'images/Mains/Elements/Rare/16.png', 1, 3, 1, 1),
+('Deep Sea Serpent', 'images/Mains/Elements/Rare/17.png', 1, 3, 1, 1),
+
+-- Mythical (2)
 ('Water Element', 'images/Mains/Elements/Mythical/18.png', 1, 4, 1, 1),
+('Leviathan', 'images/Mains/Elements/Mythical/19.png', 1, 4, 1, 1),
+
+-- Legendary (1)
 ('Shark', 'images/Mains/Elements/Legendary/20.png', 1, 5, 1, 1),
 
 -- Cars
@@ -131,26 +155,23 @@ INSERT INTO owned_cards (user_id, card_id, quantity) VALUES
 (1, 25, 1);
 
 INSERT INTO cards_in_package (package_id, card_id) VALUES 
-(1, 1), 
-(1, 2), 
-(1, 3),
-(1, 4),
-(1, 5),
+-- Elements
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5),
+(1, 6), (1, 7), (1, 8), (1, 9), (1, 10),
+(1, 11), (1, 12), (1, 13), (1, 14), (1, 15),
+(1, 16), (1, 17), (1, 18), (1, 19), (1, 20),
 
 -- Cars
-(2, 6), (2, 7), (2, 8), (2, 9), (2, 10),
-(2, 11), (2, 12), (2, 13), (2, 14), (2, 15),
-(2, 16), (2, 17), (2, 18), (2, 19), (2, 20),
 (2, 21), (2, 22), (2, 23), (2, 24), (2, 25),
+(2, 26), (2, 27), (2, 28), (2, 29), (2, 30),
+(2, 31), (2, 32), (2, 33), (2, 34), (2, 35), 
+(2, 36), (2, 37), (2, 38), (2, 39), (2, 40),
 
 -- Weapons
-(3, 26), (3, 27), (3, 28),
-(3, 29), (3, 30), (3, 31),
-(3, 32), (3, 33), (3, 34),
-(3, 35), (3, 36), (3, 37),
-(3, 38), (3, 39), (3, 40),
-(3, 41), (3, 42), (3, 43),
-(3, 44), (3, 45);
+(3, 41), (3, 42), (3, 43), (3, 44), (3, 45),
+(3, 46), (3, 47), (3, 48), (3, 49), (3, 50),
+(3, 51), (3, 52), (3, 53), (3, 54), (3, 55),
+(3, 56), (3, 57), (3, 58), (3, 59), (3, 60);
 
 INSERT INTO trades (from_user_id, to_user_id, offered_card_id, wanted_card_id) VALUES
 (1, 2, 1, 2),
