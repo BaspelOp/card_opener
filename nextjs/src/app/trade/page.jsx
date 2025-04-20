@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import Notify from "@/components/Notify";
+import Tilt from "react-parallax-tilt";
 
 export default function Trade() {
   const [outgoingOffers, setOutgoingOffers] = useState([]);
@@ -15,11 +16,39 @@ export default function Trade() {
   const [userAllData, setUserAllData] = useState(null);
   const [selectedUser, setSelectedUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [flippedCards, setFlippedCards] = useState({});
   const [notify, setNotify] = useState({
     visible: false,
     message: "",
     type: ""
   });
+
+  const getRarityColor = (rarity) => {
+    switch (rarity) {
+      case "Common":
+        return "text-gray-500";
+      case "Uncommon":
+        return "text-green-500";
+      case "Rare":
+        return "text-yellow-400";
+      case "Mythical":
+        return "text-purple-500";
+      case "Legendary":
+        return "text-orange-500";
+      default:
+        return "text-gray-400";
+    }
+  };
+
+  // Otočení konkrétní kartičky
+  const flipCard = (key) => {
+    setFlippedCards((prev) => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+
+    console.log("Flipping card:", key);
+  };
 
   const handleNotify = (message, type) => {
     setNotify({ visible: true, message, type });
@@ -32,7 +61,7 @@ export default function Trade() {
     const text = event.target.value;
 
     setSearchText(text);
-    if (text.length > 0) {
+    if (text.length > 0 && userAllData) {
       const results = userAllData.users.filter((user) =>
         user.user_name.toLowerCase().includes(text.toLowerCase())
       );
@@ -130,7 +159,6 @@ export default function Trade() {
       if (!response.ok) return;
 
       const data = await response.json();
-      console.log("Outgoing offers data:", data);
       setOutgoingOffers(data);
     };
 
@@ -147,7 +175,6 @@ export default function Trade() {
       if (!response.ok) return;
 
       const data = await response.json();
-      console.log("Incoming offers data:", data);
       setIncomingOffers(data);
     };
 
@@ -197,7 +224,7 @@ export default function Trade() {
 
     if (!response.ok) return;
 
-    const data = response.json();
+    const data = await response.json();
     handleNotify(
       data.error ? data.error : data.message,
       data.error ? "error" : "success"
@@ -220,7 +247,7 @@ export default function Trade() {
 
     if (!response.ok) return;
 
-    const data = response.json();
+    const data = await response.json();
     handleNotify(
       data.error ? data.error : data.message,
       data.error ? "error" : "success"
@@ -376,71 +403,108 @@ export default function Trade() {
                       key={offer.id}
                       className="px-4 py-3 bg-white hover:bg-gray-100 grid grid-cols-4 gap-4 items-center overflow-hidden"
                     >
-                      <span className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0">
-                        <img
-                          src={offer.offered_card.image_path}
-                          alt={`${offer.offered_card.name} Image`}
-                          className="relative inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.offered_card.frame_image_path}
-                          alt={`${offer.offered_card.name} Frame`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.offered_card.icon_image_path}
-                          alt={`${offer.offered_card.name} Icon`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src="/images/Plates/Cars/Plate_empty.png"
-                          alt={`${offer.offered_card.name} Plate`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <div className="absolute left-0 bottom-0 text-center py-3 w-27">
-                          <div className="text-xs font-semibold truncate text-white">
-                            {offer.offered_card.name}
+                      <Tilt
+                        tiltMaxAngleX={10}
+                        tiltMaxAngleY={10}
+                        perspective={700}
+                        scale={1.02}
+                        glareEnable={
+                          offer.offered_card.rarity_name === "Rare" ||
+                          offer.offered_card.rarity_name === "Mythical" ||
+                          offer.offered_card.rarity_name === "Legendary"
+                        }
+                        glareMaxOpacity={0.3}
+                        glareColor={
+                          offer.offered_card.rarity_name === "Rare"
+                            ? "blue"
+                            : offer.offered_card.rarity_name === "Mythical"
+                            ? "purple"
+                            : offer.offered_card.rarity_name === "Legendary"
+                            ? "yellow"
+                            : undefined
+                        }
+                        glarePosition="all"
+                        transitionSpeed={200}
+                        className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0 cursor-pointer"
+                      >
+                        <div onClick={() => flipCard(`${offer.id}_offered`)} className={`flip-card-inner ${flippedCards[`${offer.id}_offered`] ? "flipped" : ""}`}>
+                          <div className="flip-card-front absolute inset-0 w-full h-full">
+                            <img
+                              src={offer.offered_card.image_path}
+                              alt={`${offer.offered_card.name} Image`}
+                              className="relative inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
+                            <img
+                              src={offer.offered_card.frame_image_path}
+                              alt={`${offer.offered_card.name} Frame`}
+                              className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
+                            <img
+                              src={offer.offered_card.icon_image_path}
+                              alt={`${offer.offered_card.name} Icon`}
+                              className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
                           </div>
-                          <div className="text-[0.5rem] text-gray-300 truncate">
-                            Kol: {offer.offered_card.collection_name}
-                          </div>
-                          {offer.offered_card.rarity_name && (
-                            <div className="text-[0.5rem] text-yellow-400 truncate">
-                              R: {offer.offered_card.rarity_name}
+                          <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
+                            <div className="text-xs font-bold mb-1">{offer.offered_card.name}</div>
+                            <div className="text-xs mb-1">
+                              <span className={getRarityColor(offer.offered_card.rarity_name)}>{offer.offered_card.rarity_name}</span>
                             </div>
-                          )}
+                            <div className="text-xs">Kolekce: {offer.offered_card.collection_name}</div>
+                          </div>
                         </div>
-                      </span>
-                      <span className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0">
-                        <img
-                          src={offer.wanted_card.image_path}
-                          alt={`${offer.wanted_card.name} Image`}
-                          className="relative inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.wanted_card.frame_image_path}
-                          alt={`${offer.wanted_card.name} Frame`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.wanted_card.icon_image_path}
-                          alt={`${offer.wanted_card.name} Icon`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <div className="absolute left-0 bottom-0 text-center py-3 w-27">
-                          <div className="text-xs font-semibold truncate text-white">
-                            {offer.wanted_card.name}
+                      </Tilt>
+                      <Tilt
+                        tiltMaxAngleX={10}
+                        tiltMaxAngleY={10}
+                        perspective={700}
+                        scale={1.02}
+                        glareEnable={
+                          offer.wanted_card.rarity_name === "Rare" ||
+                          offer.wanted_card.rarity_name === "Mythical" ||
+                          offer.wanted_card.rarity_name === "Legendary"
+                        }
+                        glareMaxOpacity={0.3}
+                        glareColor={
+                          offer.wanted_card.rarity_name === "Rare"
+                            ? "blue"
+                            : offer.wanted_card.rarity_name === "Mythical"
+                            ? "purple"
+                            : offer.wanted_card.rarity_name === "Legendary"
+                            ? "yellow"
+                            : undefined
+                        }
+                        glarePosition="all"
+                        transitionSpeed={200}
+                        className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0 cursor-pointer"
+                      >
+                        <div onClick={() => flipCard(`${offer.id}_wanted`)} className={`flip-card-inner ${flippedCards[`${offer.id}_wanted`] ? "flipped" : ""}`}>
+                          <div className="flip-card-front absolute inset-0 w-full h-full">
+                            <img
+                              src={offer.wanted_card.image_path}
+                              alt={`${offer.wanted_card.name} Image`}
+                              className="relative inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
+                            <img
+                              src={offer.wanted_card.frame_image_path}
+                              alt={`${offer.wanted_card.name} Frame`}
+                              className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
+                            <img
+                              src={offer.wanted_card.icon_image_path}
+                              alt={`${offer.wanted_card.name} Icon`}
+                              className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
                           </div>
-                          <div className="text-[0.5rem] text-gray-300 truncate">
-                            Kol: {offer.wanted_card.collection_name}
-                          </div>
-                          {offer.wanted_card.rarity_name && (
-                            <div className="text-[0.5rem] text-yellow-400 truncate">
-                              R: {offer.wanted_card.rarity_name}
+                          <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
+                            <div className="text-xs font-bold mb-1">{offer.wanted_card.name}</div>
+                            <div className="text-xs mb-1">
+                              <span className={getRarityColor(offer.wanted_card.rarity_name)}>{offer.wanted_card.rarity_name}</span>
                             </div>
-                          )}
+                            <div className="text-xs">Kolekce: {offer.wanted_card.collection_name}</div>
+                          </div>
                         </div>
-                      </span>
+                      </Tilt>
                       <span>
                         <span
                           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800`}
@@ -488,76 +552,121 @@ export default function Trade() {
                       <span className="text-xs font-semibold truncate text-gray-700">
                         {offer.from_username}
                       </span>
-                      <span className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0">
-                        <img
-                          src={offer.offered_card.image_path}
-                          alt={`${offer.offered_card.name} Image`}
-                          className="relative inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.offered_card.frame_image_path}
-                          alt={`${offer.offered_card.name} Frame`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.offered_card.icon_image_path}
-                          alt={`${offer.offered_card.name} Icon`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src="/images/Plates/Cars/Plate_empty.png"
-                          alt={`${offer.offered_card.name} Plate`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <div className="absolute left-0 bottom-0 text-center py-3 w-27">
-                          <div className="text-xs font-semibold truncate text-white">
-                            {offer.offered_card.name}
+                      <Tilt
+                        tiltMaxAngleX={10}
+                        tiltMaxAngleY={10}
+                        perspective={700}
+                        scale={1.02}
+                        glareEnable={
+                          offer.offered_card.rarity_name === "Rare" ||
+                          offer.offered_card.rarity_name === "Mythical" ||
+                          offer.offered_card.rarity_name === "Legendary"
+                        }
+                        glareMaxOpacity={0.3}
+                        glareColor={
+                          offer.offered_card.rarity_name === "Rare"
+                            ? "blue"
+                            : offer.offered_card.rarity_name === "Mythical"
+                            ? "purple"
+                            : offer.offered_card.rarity_name === "Legendary"
+                            ? "yellow"
+                            : undefined
+                        }
+                        glarePosition="all"
+                        transitionSpeed={200}
+                        className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0 cursor-pointer"
+                      >
+                        <div onClick={() => flipCard(`${offer.id}_offered`)} className={`flip-card-inner ${flippedCards[`${offer.id}_offered`] ? "flipped" : ""}`}>
+                          <div className="flip-card-front absolute inset-0 w-full h-full">
+                            <img
+                              src={offer.offered_card.image_path}
+                              alt={`${offer.offered_card.name} Image`}
+                              className="relative inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
+                            <img
+                              src={offer.offered_card.frame_image_path}
+                              alt={`${offer.offered_card.name} Frame`}
+                              className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
+                            <img
+                              src={offer.offered_card.icon_image_path}
+                              alt={`${offer.offered_card.name} Icon`}
+                              className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
                           </div>
-                          <div className="text-[0.5rem] text-gray-300 truncate">
-                            Kol: {offer.offered_card.collection_name}
-                          </div>
-                          {offer.offered_card.rarity_name && (
-                            <div className="text-[0.5rem] text-yellow-400 truncate">
-                              R: {offer.offered_card.rarity_name}
+                          <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
+                            <div className="text-xs font-bold mb-1">{offer.offered_card.name}</div>
+                            <div className="text-xs mb-1">
+                              <span className={getRarityColor(offer.offered_card.rarity_name)}>{offer.offered_card.rarity_name}</span>
                             </div>
-                          )}
+                            <div className="text-xs">Kolekce: {offer.offered_card.collection_name}</div>
+                          </div>
                         </div>
-                      </span>
-                      <span className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0">
-                        <img
-                          src={offer.wanted_card.image_path}
-                          alt={`${offer.wanted_card.name} Image`}
-                          className="relative inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.wanted_card.frame_image_path}
-                          alt={`${offer.wanted_card.name} Frame`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src={offer.wanted_card.icon_image_path}
-                          alt={`${offer.wanted_card.name} Icon`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <img
-                          src="/images/Plates/Cars/Plate_empty.png"
-                          alt={`${offer.wanted_card.name} Plate`}
-                          className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
-                        />
-                        <div className="absolute left-0 bottom-0 text-center py-3 w-27">
-                          <div className="text-xs font-semibold truncate text-white">
-                            {offer.wanted_card.name}
-                          </div>
-                          <div className="text-[0.5rem] text-gray-300 truncate">
-                            Kol: {offer.wanted_card.collection_name}
-                          </div>
-                          {offer.wanted_card.rarity_name && (
-                            <div className="text-[0.5rem] text-yellow-400 truncate">
-                              R: {offer.wanted_card.rarity_name}
+                      </Tilt>
+                      <Tilt
+                        tiltMaxAngleX={10}
+                        tiltMaxAngleY={10}
+                        perspective={700}
+                        scale={1.02}
+                        glareEnable={
+                          offer.wanted_card.rarity_name === "Rare" ||
+                          offer.wanted_card.rarity_name === "Mythical" ||
+                          offer.wanted_card.rarity_name === "Legendary"
+                        }
+                        glareMaxOpacity={0.3}
+                        glareColor={
+                          offer.wanted_card.rarity_name === "Rare"
+                            ? "blue"
+                            : offer.wanted_card.rarity_name === "Mythical"
+                            ? "purple"
+                            : offer.wanted_card.rarity_name === "Legendary"
+                            ? "yellow"
+                            : undefined
+                        }
+                        glarePosition="all"
+                        transitionSpeed={200}
+                        className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0 cursor-pointer"
+                      >
+                        <div onClick={() => flipCard(`${offer.id}_wanted`)} className={`flip-card-inner ${flippedCards[`${offer.id}_wanted`] ? "flipped" : ""}`}>
+                          <div className="flip-card-front absolute inset-0 w-full h-full">
+                            <img
+                              src={offer.wanted_card.image_path}
+                              alt={`${offer.wanted_card.name} Image`}
+                              className="relative inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
+                            <img
+                              src={offer.wanted_card.frame_image_path}
+                              alt={`${offer.wanted_card.name} Frame`}
+                              className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
+                            <img
+                              src={offer.wanted_card.icon_image_path}
+                              alt={`${offer.wanted_card.name} Icon`}
+                              className="absolute inset-0 object-cover pointer-events-none max-w-full max-h-full"
+                            />
+                            <div className="absolute left-0 bottom-0 text-center py-3 w-27">
+                              <div className="text-xs font-semibold truncate text-white">
+                                {offer.wanted_card.name}
+                              </div>
+                              <div className="text-[0.5rem] text-gray-300 truncate">
+                                Kol: {offer.wanted_card.collection_name}
+                              </div>
+                              {offer.wanted_card.rarity_name && (
+                                <div className={`text-[0.5rem] truncate ${getRarityColor(offer.wanted_card.rarity_name)}`}>
+                                  R: {offer.wanted_card.rarity_name}
+                                </div>
+                              )}
                             </div>
-                          )}
+                          </div>
+                          <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
+                            <div className="text-xs font-bold mb-1">{offer.wanted_card.name}</div>
+                            <div className="text-xs mb-1">
+                              Rarita: <span className={getRarityColor(offer.wanted_card.rarity_name)}>{offer.wanted_card.rarity_name}</span>
+                            </div>
+                            <div className="text-xs">Kolekce: {offer.wanted_card.collection_name}</div>
+                          </div>
                         </div>
-                      </span>
+                      </Tilt>
                       <span className="text-right">
                         <button
                           onClick={() => handleAcceptOffer(offer.id)}

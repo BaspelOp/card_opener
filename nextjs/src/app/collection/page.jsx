@@ -8,6 +8,7 @@ import Notify from "@/components/Notify";
 export default function Collection() {
   const [collections, setCollections] = useState([]);
   const [openIndex, setOpenIndex] = useState(null);
+  const [flippedCards, setFlippedCards] = useState([]);
   const [notify, setNotify] = useState({
     visible: false,
     message: "",
@@ -21,8 +22,40 @@ export default function Collection() {
     }, 5000);
   };
 
+  const getRarityColor = (rarity) => {
+    switch (rarity) {
+      case "Common":
+        return "text-gray-500";
+      case "Uncommon":
+        return "text-green-500";
+      case "Rare":
+        return "text-yellow-400";
+      case "Mythical":
+        return "text-purple-500";
+      case "Legendary":
+        return "text-orange-500";
+      default:
+        return "text-gray-400";
+    }
+  };
+
   const handleToggle = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
+    if (openIndex === index) {
+      setOpenIndex(null);
+      setFlippedCards([]);
+    } else {
+      setOpenIndex(index);
+      const cardsLength = collections[index]?.cards?.length || 0;
+      setFlippedCards(Array(cardsLength).fill(false));
+    }
+  };
+
+  const flipCard = (cardIndex) => {
+    setFlippedCards(prev => {
+      const newFlipped = [...prev];
+      newFlipped[cardIndex] = !newFlipped[cardIndex];
+      return newFlipped;
+    });
   };
 
   useEffect(() => {
@@ -75,7 +108,7 @@ export default function Collection() {
                   <div className="mt-4">
                     {collection.cards.length > 0 ? (
                       <div className="flex justify-center flex-wrap gap-10">
-                        {collection.cards.map((card) => (
+                        {collection.cards.map((card, index) => (
                           <Tilt
                             key={card.id}
                             tiltMaxAngleX={10}
@@ -100,35 +133,36 @@ export default function Collection() {
                             className={`w-[160px] h-[224px]`}
                           >
                             <motion.div
-                              className={`relative w-[160px] h-[224px] mb-1`}
+                              className={`relative w-[160px] h-[224px] mb-1 cursor-pointer`}
                               initial={{ opacity: 0, y: -20 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: index * 0.1 }}
+                              onClick={() => flipCard(index)}
                             >
-                              <img
-                                src={card.image_path}
-                                alt={`${card.name} Image`}
-                                className="absolute inset-0 w-[160px] h-[224px] object-contain"
-                              />
-                              <img
-                                src={card.frame.image_path}
-                                alt={`${card.name} Frame`}
-                                className="absolute inset-0 w-[160px] h-[224px] object-contain"
-                              />
-                              <img
-                                src={card.icon.image_path}
-                                alt={`${card.name} Icon`}
-                                className="absolute inset-0 w-[160px] h-[224px] object-contain"
-                              />
-                              <div className="absolute inset-0 flex flex-col items-center justify-end py-5 w-full z-10">
-                                <span className="text-[1rem] font-semibold truncate text-white">
-                                  {card.name}
-                                </span>
-                                {card.rarity?.name && (
-                                  <span className="text-[0.8rem] text-yellow-400 truncate">
-                                    R: {card.rarity.name}
-                                  </span>
-                                )}
+                              <div className={`flip-card-inner ${flippedCards[index] ? "flipped" : ""}`}>
+                                <div className="flip-card-front absolute inset-0 w-full h-full">
+                                  <img
+                                    src={card.image_path}
+                                    alt={`${card.name} Image`}
+                                    className="absolute inset-0 w-[160px] h-[224px] object-contain rounded-md"
+                                  />
+                                  <img
+                                    src={card.frame.image_path}
+                                    alt={`${card.name} Frame`}
+                                    className="absolute inset-0 w-[160px] h-[224px] object-contain rounded-md"
+                                  />
+                                  <img
+                                    src={card.icon.image_path}
+                                    alt={`${card.name} Icon`}
+                                    className="absolute inset-0 w-[160px] h-[224px] object-contain rounded-md"
+                                  />
+                                </div>
+                                <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white rounded-md">
+                                  <div className="text-lg font-bold mb-2">{card.name}</div>
+                                  <div className="text-md mb-2">
+                                    <span className={getRarityColor(card.rarity.name)}>{card.rarity?.name}</span>
+                                  </div>
+                                </div>
                               </div>
                             </motion.div>
                           </Tilt>

@@ -14,8 +14,33 @@ import {
 export default function ProfileComponent() {
   const [userData, setUserData] = useState(null);
   const [expandedCollections, setExpandedCollections] = useState({});
+  const [flippedCards, setFlippedCards] = useState({});
   const { data: session, status } = useSession();
   let hasFetched = false;
+
+  const getRarityColor = (rarity) => {
+    switch (rarity) {
+      case "Common":
+        return "text-gray-500";
+      case "Uncommon":
+        return "text-green-500";
+      case "Rare":
+        return "text-yellow-400";
+      case "Mythical":
+        return "text-purple-500";
+      case "Legendary":
+        return "text-orange-500";
+      default:
+        return "text-gray-400";
+    }
+  };
+
+  const flipCard = (cardId) => {
+    setFlippedCards((prev) => ({
+      ...prev,
+      [cardId]: !prev[cardId]
+    }));
+  };
 
   const loadUserData = async () => {
     if (hasFetched) return;
@@ -138,7 +163,7 @@ export default function ProfileComponent() {
                     </div>
                     {expandedCollections[collectionId] && (
                       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 mt-2">
-                        {Object.values(collectionData.cards).map((card) => (
+                        {Object.values(collectionData.cards).map((card, index) => (
                           <Tilt
                             key={card.id}
                             tiltMaxAngleX={10}
@@ -162,44 +187,43 @@ export default function ProfileComponent() {
                             transitionSpeed={200}
                           >
                             <motion.div
-                              className={`relative w-24 h-36 rounded-md shadow-md overflow-hidden`}
+                              className={`relative w-24 h-36 rounded-md shadow-md overflow-hidden cursor-pointer`}
                               initial={{ opacity: 0, y: -20 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: 5 * 0.1 }}
+                              onClick={() => flipCard(index)}
                             >
-                              <img
-                                src={card.card_image_path}
-                                alt={card.card_name}
-                                className="absolute inset-0 w-full h-full object-cover"
-                              />
-                              <img
-                                src={card.frame_image_path}
-                                alt={`${card.card_name} Frame`}
-                                className="absolute inset-0 w-full h-full object-cover"
-                              />
-                              <img
-                                src={card.icon_image_path}
-                                alt={`${card.card_name} Icon`}
-                                className="absolute inset-0 w-full h-full object-cover"
-                              />
-                              <div className="absolute bottom-0 left-0 right-0 text-white text-center py-2">
-                                <div className="text-xs font-semibold truncate">
-                                  {card.card_name}
+                              <div className={`flip-card-inner ${flippedCards[index] ? "flipped" : ""}`}>
+                                <div className="flip-card-front absolute inset-0 w-full h-full">
+                                  <img
+                                    src={card.card_image_path}
+                                    alt={card.card_name}
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                  />
+                                  <img
+                                    src={card.frame_image_path}
+                                    alt={`${card.card_name} Frame`}
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                  />
+                                  <img
+                                    src={card.icon_image_path}
+                                    alt={`${card.card_name} Icon`}
+                                    className="absolute inset-0 w-full h-full object-cover"
+                                  />
                                 </div>
-                                <div className="text-[0.5rem] text-gray-300 truncate">
-                                  Kol: {card.collection_name}
-                                </div>
-                                {card.rarity_name && (
-                                  <div className="text-[0.5rem] text-yellow-400 truncate">
-                                    R: {card.rarity_name}
+                                <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
+                                  <div className="text-xs font-bold mb-1">{card.card_name}</div>
+                                  <div className="text-xs mb-1">
+                                    <span className={getRarityColor(card.rarity_name)}>{card.rarity_name}</span>
                                   </div>
-                                )}
+                                  <div className="text-xs">Kolekce: {card.collection_name}</div>
+                                  {card.card_quantity > 1 && (
+                                    <span className="mt-2 bg-indigo-500 text-white text-xs font-semibold rounded-full px-2 py-1 shadow-md">
+                                      x{card.card_quantity}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
-                              {card.card_quantity > 1 && (
-                                <span className="absolute top-0 right-0 bg-indigo-500 text-white text-xs font-semibold rounded-full px-2 py-1 shadow-md transform">
-                                  x{card.card_quantity}
-                                </span>
-                              )}
                             </motion.div>
                           </Tilt>
                         ))}
