@@ -3,11 +3,13 @@ CALL register('jane_smith', '{"local": "jane.smith","domain": "company.com"}', '
 
 INSERT INTO packages (name, number_of_cards, image_path) VALUES 
 ('Package Of Water', 7, 'images/packages/package_water.png'),
-('Package Of Cars', 20, 'images/Packages/Cars/Package.png');
+('Package Of Cars', 5, 'images/Packages/Cars/Package.png'),
+('Package Of Weapons', 3, 'images/Packages/Weapons/Package.png');
 
 INSERT INTO collections (name) VALUES 
 ('Elements'),
-('Cars');
+('Cars'),
+('Weapons');
 
 -- Numbers from document but optimized
 INSERT INTO card_rarities (name, chance, image_path) VALUES
@@ -19,11 +21,13 @@ INSERT INTO card_rarities (name, chance, image_path) VALUES
 
 INSERT INTO card_frames (name, image_path) VALUES 
 ('Water Frame', 'images/frames/water_frame.png'),
-('Cars Frame', 'images/Frames/Cars/Frame.png');
+('Cars Frame', 'images/Frames/Cars/Frame.png'),
+('Weapons Frame', 'images/Frames/Weapons/Frame.png');
 
 INSERT INTO card_icons (name, image_path) VALUES 
 ('Water Icon', 'images/icons/water_icon.png'),
-('Cars Icon', 'images/Icons/Cars/Icon.png');
+('Cars Icon', 'images/Icons/Cars/Icon.png'),
+('Weapons Icon', 'images/Icons/Weapons/Icon.png');
 
 INSERT INTO cards (name, image_path, collection_id, rarity_id, frame_id, icon_id) VALUES 
 -- Elements
@@ -62,7 +66,39 @@ INSERT INTO cards (name, image_path, collection_id, rarity_id, frame_id, icon_id
 ('Concept Car', 'images/Mains/Cars/Mythical/19.png', 2, 4, 2, 2),
 
 -- Legendary (1)
-('Hypercar', 'images/Mains/Cars/Legendary/20.png', 2, 5, 2, 2);
+('Hypercar', 'images/Mains/Cars/Legendary/20.png', 2, 5, 2, 2),
+
+-- Weapons
+-- Common (8)
+('Knife', 'images/Mains/Weapons/Common/1.png', 3, 1, 3, 3),
+('Pistol', 'images/Mains/Weapons/Common/2.png', 3, 1, 3, 3),
+('Revolver', 'images/Mains/Weapons/Common/3.png', 3, 1, 3, 3),
+('Shotgun', 'images/Mains/Weapons/Common/4.png', 3, 1, 3, 3),
+('Rifle', 'images/Mains/Weapons/Common/5.png', 3, 1, 3, 3),
+('Sniper Rifle', 'images/Mains/Weapons/Common/6.png', 3, 1, 3, 3),
+('Grenade', 'images/Mains/Weapons/Common/7.png', 3, 1, 3, 3),
+('Crossbow', 'images/Mains/Weapons/Common/8.png', 3, 1, 3, 3),
+
+-- Uncommon (5)
+('Flamethrower', 'images/Mains/Weapons/Uncommon/9.png', 3, 2, 3, 3),
+('Machine Gun', 'images/Mains/Weapons/Uncommon/10.png', 3, 2, 3, 3),
+('Rocket Launcher', 'images/Mains/Weapons/Uncommon/11.png', 3, 2, 3, 3),
+('Katana', 'images/Mains/Weapons/Uncommon/12.png', 3, 2, 3, 3),
+('Bow', 'images/Mains/Weapons/Uncommon/13.png', 3, 2, 3, 3),
+
+-- Rare (4)
+('Laser Gun', 'images/Mains/Weapons/Rare/14.png', 3, 3, 3, 3),
+('Plasma Rifle', 'images/Mains/Weapons/Rare/15.png', 3, 3, 3, 3),
+('Energy Sword', 'images/Mains/Weapons/Rare/16.png', 3, 3, 3, 3),
+('Railgun', 'images/Mains/Weapons/Rare/17.png', 3, 3, 3, 3),
+
+-- Mythical (2)
+('Gravity Gun', 'images/Mains/Weapons/Mythical/18.png', 3, 4, 3, 3),
+('Dark Matter Cannon', 'images/Mains/Weapons/Mythical/19.png', 3, 4, 3, 3),
+
+-- Legendary (1)
+('Excalibur', 'images/Mains/Weapons/Legendary/20.png', 3, 5, 3, 3);
+
 
 INSERT INTO owned_cards (user_id, card_id, quantity) VALUES 
 (1, 1, 10), 
@@ -105,7 +141,16 @@ INSERT INTO cards_in_package (package_id, card_id) VALUES
 (2, 6), (2, 7), (2, 8), (2, 9), (2, 10),
 (2, 11), (2, 12), (2, 13), (2, 14), (2, 15),
 (2, 16), (2, 17), (2, 18), (2, 19), (2, 20),
-(2, 21), (2, 22), (2, 23), (2, 24), (2, 25);
+(2, 21), (2, 22), (2, 23), (2, 24), (2, 25),
+
+-- Weapons
+(3, 26), (3, 27), (3, 28),
+(3, 29), (3, 30), (3, 31),
+(3, 32), (3, 33), (3, 34),
+(3, 35), (3, 36), (3, 37),
+(3, 38), (3, 39), (3, 40),
+(3, 41), (3, 42), (3, 43),
+(3, 44), (3, 45);
 
 INSERT INTO trades (from_user_id, to_user_id, offered_card_id, wanted_card_id) VALUES
 (1, 2, 1, 2),
