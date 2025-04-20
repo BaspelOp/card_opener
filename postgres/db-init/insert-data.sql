@@ -2,7 +2,7 @@ CALL register('john_doe', '{"local": "john.doe","domain": "database.cz"}', 'secu
 CALL register('jane_smith', '{"local": "jane.smith","domain": "company.com"}', 'strongPassword456');
 
 INSERT INTO packages (name, number_of_cards, image_path) VALUES 
-('Package Of Water', 7, 'images/packages/package_water.png'),
+('Package Of Water', 7, 'images/Packages/Elements/Package.png'),
 ('Package Of Cars', 5, 'images/Packages/Cars/Package.png'),
 ('Package Of Weapons', 3, 'images/Packages/Weapons/Package.png');
 
