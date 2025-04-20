@@ -78,6 +78,10 @@ export default function Pack() {
 
     if (response.ok) {
       const data = await response.json();
+
+
+      console.log(data);
+
       setPacks(data);
     }
   };
@@ -92,7 +96,7 @@ export default function Pack() {
       <div className="container mx-auto text-center flex justify-center items-center">
         {!opened ? (
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+            className="flex justify-center flex-wrap gap-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -101,22 +105,17 @@ export default function Pack() {
               <motion.div
                 key={pack.id}
                 className="w-60 h-80 rounded-xl shadow-lg overflow-hidden cursor-pointer pointer-events-auto transform transition-transform hover:scale-105"
-                style={{
-                  backgroundImage: pack.image_path
-                    ? `url(${pack.image_path})`
-                    : "linear-gradient(to bottom right, #a855f7, #8b5cf6)",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center"
-                }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
                 onClick={() => openPack(pack.id)}
               >
-                <div className="absolute inset-0 bg-black bg-opacity-60 flex flex-col items-center justify-center text-white">
-                  <h3 className="font-bold text-xl mb-3">{pack.name}</h3>
-                  <div className="text-sm text-gray-300">
-                    Obsahuje {pack.number_of_cards} karet
-                  </div>
+                <div className="absolute inset-0 bg-opacity-60 flex flex-col items-center justify-center text-white">
+                  <img
+                    src={pack.image_path}
+                    alt={pack.name}
+                    className="absolute inset-0 w-full h-full object-cover z-[-1]"
+                  />
+                  <h3 className="absolute font-bold text-xl bottom-0 mb-4">{pack.name}</h3>
                   <motion.div
                     className="absolute bottom-4 w-full px-4"
                     initial={{ y: 20, opacity: 0 }}
@@ -137,7 +136,7 @@ export default function Pack() {
             <h2 className="text-3xl font-semibold text-gray-800 py-12">
               Otevřené karty:
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+            <div className="flex justify-center flex-wrap gap-10">
               {cards.map((card, index) => (
                 <Tilt
                   key={card.id}

@@ -74,7 +74,7 @@ export default function Collection() {
                 {openIndex === index && (
                   <div className="mt-4">
                     {collection.cards.length > 0 ? (
-                      <div className="flex justify-center flex-wrap gap-10 ">
+                      <div className="flex justify-center flex-wrap gap-10">
                         {collection.cards.map((card) => (
                           <Tilt
                             key={card.id}
@@ -118,11 +118,6 @@ export default function Collection() {
                               <img
                                 src={card.icon.image_path}
                                 alt={`${card.name} Icon`}
-                                className="absolute inset-0 w-[160px] h-[224px] object-contain"
-                              />
-                              <img
-                                src="/images/Plates/Cars/Plate_empty.png"
-                                alt={`${card.name} Plate`}
                                 className="absolute inset-0 w-[160px] h-[224px] object-contain"
                               />
                               <div className="absolute inset-0 flex flex-col items-center justify-end py-5 w-full z-10">

@@ -182,11 +182,6 @@ export default function ProfileComponent() {
                                 alt={`${card.card_name} Icon`}
                                 className="absolute inset-0 w-full h-full object-cover"
                               />
-                              <img
-                                src="/images/Plates/Cars/Plate_empty.png"
-                                alt={`${card.card_name} Plate`}
-                                className="absolute inset-0 w-full h-full object-cover"
-                              />
                               <div className="absolute bottom-0 left-0 right-0 text-white text-center py-2">
                                 <div className="text-xs font-semibold truncate">
                                   {card.card_name}
