@@ -20,22 +20,22 @@ INSERT INTO card_rarities (name, chance, image_path) VALUES
 ('Legendary', 4, 'images/rarity/legendary.png');
 
 INSERT INTO card_frames (name, image_path) VALUES 
-('Water Frame', 'images/frames/water_frame.png'),
+('Water Frame', 'images/Frames/Elements/Frame.png'),
 ('Cars Frame', 'images/Frames/Cars/Frame.png'),
 ('Weapons Frame', 'images/Frames/Weapons/Frame.png');
 
 INSERT INTO card_icons (name, image_path) VALUES 
-('Water Icon', 'images/icons/water_icon.png'),
+('Water Icon', 'images/Icons/Elements/Icon.png'),
 ('Cars Icon', 'images/Icons/Cars/Icon.png'),
 ('Weapons Icon', 'images/Icons/Weapons/Icon.png');
 
 INSERT INTO cards (name, image_path, collection_id, rarity_id, frame_id, icon_id) VALUES 
 -- Elements
-('Human Of Water', 'images/cards/human_of_water.png', 1, 1, 1, 1),
-('Guard Of Water', 'images/cards/guard_of_water.png', 1, 2, 1, 1),
-('Prisoner Of Water', 'images/cards/prisoner_of_water.png', 1, 3, 1, 1),
-('Water Element', 'images/cards/water_element.png', 1, 4, 1, 1),
-('Shark', 'images/cards/shark.png', 1, 5, 1, 1),
+('Human Of Water', 'images/Mains/Elements/Common/1.png', 1, 1, 1, 1),
+('Guard Of Water', 'images/Mains/Elements/Uncommon/2.png', 1, 2, 1, 1),
+('Prisoner Of Water', 'images/Mains/Elements/Rare/3.png', 1, 3, 1, 1),
+('Water Element', 'images/Mains/Elements/Mythical/4.png', 1, 4, 1, 1),
+('Shark', 'images/Mains/Elements/Legendary/5.png', 1, 5, 1, 1),
 
 -- Cars
 -- Common (8)
