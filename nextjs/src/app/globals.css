@@ -60,3 +60,6 @@ body {
 .flip-card-back {
   transform: rotateY(180deg);
 }
+.recharts-default-legend {
+  display: none !important;
+}
