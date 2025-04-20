@@ -132,7 +132,6 @@ export default function Pack() {
               <motion.div
                 key={pack.id}
                 className="w-60 h-80 rounded-lg shadow-lg overflow-hidden cursor-pointer pointer-events-auto transform transition-transform hover:scale-105 border-2 border-black"
-                whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.2 }}
                 onClick={() => openPack(pack.id)}
               >
@@ -143,12 +142,6 @@ export default function Pack() {
                     className="absolute inset-0 w-full h-full object-cover z-[-1]"
                   />
                   <h3 className="absolute font-bold text-xl bottom-0 mb-4">{pack.name}</h3>
-                  <motion.div
-                    className="absolute bottom-4 w-full px-4"
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.3, delay: 0.2 }}
-                  ></motion.div>
                 </div>
               </motion.div>
             ))}

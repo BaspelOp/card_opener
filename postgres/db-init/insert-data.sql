@@ -32,10 +32,10 @@ INSERT INTO card_icons (name, image_path) VALUES
 INSERT INTO cards (name, image_path, collection_id, rarity_id, frame_id, icon_id) VALUES 
 -- Elements
 ('Human Of Water', 'images/Mains/Elements/Common/1.png', 1, 1, 1, 1),
-('Guard Of Water', 'images/Mains/Elements/Uncommon/2.png', 1, 2, 1, 1),
-('Prisoner Of Water', 'images/Mains/Elements/Rare/3.png', 1, 3, 1, 1),
-('Water Element', 'images/Mains/Elements/Mythical/4.png', 1, 4, 1, 1),
-('Shark', 'images/Mains/Elements/Legendary/5.png', 1, 5, 1, 1),
+('Guard Of Water', 'images/Mains/Elements/Uncommon/9.png', 1, 2, 1, 1),
+('Prisoner Of Water', 'images/Mains/Elements/Rare/14.png', 1, 3, 1, 1),
+('Water Element', 'images/Mains/Elements/Mythical/18.png', 1, 4, 1, 1),
+('Shark', 'images/Mains/Elements/Legendary/20.png', 1, 5, 1, 1),
 
 -- Cars
 -- Common (8)
