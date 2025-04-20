@@ -11,20 +11,20 @@
   },
   "dependencies": {
     "@auth/pg-adapter": "1.8.0",
-    "motion": "12.6.5",
-    "next": "15.3.0",
+    "motion": "12.7.4",
+    "next": "15.3.1",
     "next-auth": "5.0.0-beta.25",
     "pg": "8.14.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-icons": "5.5.0",
-    "react-parallax-tilt": "1.7.290",
-    "recharts": "2.15.2"
+    "react-parallax-tilt": "1.7.291",
+    "recharts": "2.15.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.1.3",
     "postcss": "8.5.3",
     "prettier": "3.5.3",
-    "tailwindcss": "4.1.3"
+    "tailwindcss": "4.1.4"
   }
 }

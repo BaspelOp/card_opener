@@ -18,7 +18,6 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-    const client = await pool.connect();
     const databaseId = session.user.databaseId;
 
     const query = `
@@ -29,16 +28,15 @@ export async function POST(request) {
                 wanted_card_id
             )
             VALUES ($1, $2, $3, $4)
-            RETURNING id
+            RETURNING id;
         `;
 
-    const result = await client.query(query, [
+    const result = await pool.query(query, [
       databaseId,
       toUserId,
       offeredCard,
       requestedCard
     ]);
-    client.release();
 
     if (result.rows.length === 0) {
       return NextResponse.json(
@@ -47,10 +45,10 @@ export async function POST(request) {
       );
     }
 
-    return NextResponse.json(
-      { message: "Trade created successfully", tradeId: result.rows[0].id },
-      { status: 200 }
-    );
+    return NextResponse.json({
+      message: "Trade created successfully",
+      tradeId: result.rows[0].id
+    });
   } catch (err) {
     console.error("Error in API:", err);
     return NextResponse.json(

@@ -18,12 +18,12 @@ export default function Login() {
     type: ""
   });
 
-  const handleNotify = (message, type) => {
+  const handleNotify = async (message, type) => {
     setNotify({ visible: true, message, type });
     setTimeout(() => setNotify({ ...notify, visible: false }), 5000);
   };
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 

@@ -11,7 +11,6 @@ export async function GET() {
     }
 
     const databaseId = session.user.databaseId;
-    const client = await pool.connect();
 
     const query = `
             SELECT
@@ -52,8 +51,7 @@ export async function GET() {
             WHERE t.to_user_id = $1;
         `;
 
-    const result = await client.query(query, [databaseId]);
-    client.release();
+    const result = await pool.query(query, [databaseId]);
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: "No trades found" }, { status: 404 });
@@ -83,7 +81,7 @@ export async function GET() {
       }
     }));
 
-    return NextResponse.json(trades, { status: 200 });
+    return NextResponse.json(trades);
   } catch (err) {
     console.error("Error in API:", err);
     return NextResponse.json(

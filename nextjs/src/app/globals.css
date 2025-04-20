@@ -51,7 +51,8 @@ body {
 .flip-card-inner.flipped {
   transform: rotateY(180deg);
 }
-.flip-card-front, .flip-card-back {
+.flip-card-front,
+.flip-card-back {
   backface-visibility: hidden;
   position: absolute;
   width: 100%;

@@ -6,7 +6,6 @@ import pool from "@/lib/db";
 export const { auth, handlers, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   adapter: PostgresAdapter(pool),
-  secret: "b2e52a4311c531e447f5d5817278198eeeb83e257adbd0161c2fa0d494270b8a",
   providers: [
     CredentialsProvider({
       name: "Sign in",
@@ -21,15 +20,19 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         const { email, password } = credentials;
         const client = await pool.connect();
+        const emailJson = JSON.stringify({
+          local: email.split("@")[0],
+          domain: email.split("@")[1]
+        })
         const queryResult = await client.query(
-          "SELECT login($1, $2) AS result",
-          [JSON.stringify(email), password]
+          "SELECT login($1, $2) AS result;",
+          [emailJson, password]
         );
         const result = queryResult.rows[0]?.result;
 
         const addInfoResult = await client.query(
-          "SELECT id, username FROM users WHERE email = $1",
-          [JSON.stringify(email)]
+          "SELECT id, username FROM users WHERE email = $1;",
+          [emailJson]
         );
 
         const infoResult = addInfoResult.rows[0];

@@ -18,18 +18,20 @@ export async function POST(request) {
     }
 
     const client = await pool.connect();
-
     try {
+      await client.query("BEGIN;");
       for (const card of cards.cards) {
         await client.query("CALL add_owned_card($1, $2);", [
           databaseId,
           card.card_id
         ]);
       }
-      return NextResponse.json(
-        { message: "Cards saved successfully" },
-        { status: 200 }
-      );
+      await client.query("COMMIT;");
+
+      return NextResponse.json({ message: "Cards saved successfully" });
+    } catch (err) {
+      console.error("Error saving cards:", err);
+      await client.query("ROLLBACK;");
     } finally {
       client.release();
     }

@@ -12,13 +12,16 @@ export async function POST(request) {
       );
     }
 
-    const client = await pool.connect();
-    await client.query("CALL register($1, $2, $3)", [
+    const emailJson = JSON.stringify({
+      local: email.split("@")[0],
+      domain: email.split("@")[1]
+    })
+
+    await pool.query("CALL register($1, $2, $3);", [
       username,
-      JSON.stringify(email),
+      emailJson,
       password
     ]);
-    client.release();
 
     return NextResponse.json(
       { message: "Registrace proběhla úspěšně!" },

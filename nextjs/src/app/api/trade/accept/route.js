@@ -11,7 +11,6 @@ export async function POST(request) {
     }
 
     const { offerId } = await request.json();
-    const client = await pool.connect();
 
     if (!offerId) {
       return NextResponse.json(
@@ -20,13 +19,9 @@ export async function POST(request) {
       );
     }
 
-    await client.query("CALL accept_trade($1)", [offerId]);
-    client.release();
+    await pool.query("CALL accept_trade($1);", [offerId]);
 
-    return NextResponse.json(
-      { message: "Trade accepted successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Trade accepted successfully" });
   } catch (err) {
     console.error("Error in API:", err);
     return NextResponse.json(

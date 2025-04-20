@@ -51,7 +51,7 @@ export default function Collection() {
   };
 
   const flipCard = (cardIndex) => {
-    setFlippedCards(prev => {
+    setFlippedCards((prev) => {
       const newFlipped = [...prev];
       newFlipped[cardIndex] = !newFlipped[cardIndex];
       return newFlipped;
@@ -123,10 +123,13 @@ export default function Collection() {
                             }
                             glareMaxOpacity={0.3}
                             glareColor={
-                              card.rarity.name === "Rare" ? "blue" :
-                              card.rarity.name === "Mythical" ? "purple" :
-                              card.rarity.name === "Legendary" ? "yellow" :
-                              undefined
+                              card.rarity.name === "Rare"
+                                ? "blue"
+                                : card.rarity.name === "Mythical"
+                                  ? "purple"
+                                  : card.rarity.name === "Legendary"
+                                    ? "yellow"
+                                    : undefined
                             }
                             glarePosition="all"
                             transitionSpeed={200}
@@ -139,7 +142,9 @@ export default function Collection() {
                               transition={{ delay: index * 0.1 }}
                               onClick={() => flipCard(index)}
                             >
-                              <div className={`flip-card-inner ${flippedCards[index] ? "flipped" : ""}`}>
+                              <div
+                                className={`flip-card-inner ${flippedCards[index] ? "flipped" : ""}`}
+                              >
                                 <div className="flip-card-front absolute inset-0 w-full h-full">
                                   <img
                                     src={card.image_path}
@@ -158,9 +163,17 @@ export default function Collection() {
                                   />
                                 </div>
                                 <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white rounded-md">
-                                  <div className="text-lg font-bold mb-2">{card.name}</div>
+                                  <div className="text-lg font-bold mb-2">
+                                    {card.name}
+                                  </div>
                                   <div className="text-md mb-2">
-                                    <span className={getRarityColor(card.rarity.name)}>{card.rarity?.name}</span>
+                                    <span
+                                      className={getRarityColor(
+                                        card.rarity.name
+                                      )}
+                                    >
+                                      {card.rarity?.name}
+                                    </span>
                                   </div>
                                 </div>
                               </div>

@@ -2,15 +2,13 @@ import { NextResponse } from "next/server";
 import pool from "@/lib/db";
 import { auth } from "@/auth";
 
-export async function GET(_) {
+export async function GET() {
   try {
     const session = await auth();
 
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
-    const client = await pool.connect();
 
     const query = `
             SELECT
@@ -44,8 +42,7 @@ export async function GET(_) {
                 u.username, col.name;
         `;
 
-    const result = await client.query(query);
-    client.release();
+    const result = await pool.query(query);
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: "No users found" }, { status: 404 });
@@ -95,7 +92,7 @@ export async function GET(_) {
         cards: user.cards
       })
     );
-    return NextResponse.json({ users: formattedUsers }, { status: 200 });
+    return NextResponse.json({ users: formattedUsers });
   } catch (err) {
     console.error("Error in API:", err);
     return NextResponse.json(

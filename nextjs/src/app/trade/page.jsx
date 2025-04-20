@@ -122,6 +122,22 @@ export default function Trade() {
       }
     }
   };
+  
+  const fetchOutgoingOffers = async () => {
+    if (!session) return;
+
+    const response = await fetch("/api/trade/outgoing", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!response.ok) return;
+
+    const data = await response.json();
+    setOutgoingOffers(data);
+  };
 
   useEffect(() => {
     const fetchAllUsers = async () => {
@@ -144,22 +160,6 @@ export default function Trade() {
       setSelectedUser(
         data.users.find((user) => user.user_id === selectedUserId)
       );
-    };
-
-    const fetchOutgoingOffers = async () => {
-      if (!session) return;
-
-      const response = await fetch("/api/trade/outgoing", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-
-      if (!response.ok) return;
-
-      const data = await response.json();
-      setOutgoingOffers(data);
     };
 
     const fetchIncomingOffers = async () => {
@@ -203,6 +203,8 @@ export default function Trade() {
     });
 
     if (!response.ok) return;
+
+    fetchOutgoingOffers()
 
     const data = await response.json();
     handleNotify(
@@ -418,16 +420,19 @@ export default function Trade() {
                           offer.offered_card.rarity_name === "Rare"
                             ? "blue"
                             : offer.offered_card.rarity_name === "Mythical"
-                            ? "purple"
-                            : offer.offered_card.rarity_name === "Legendary"
-                            ? "yellow"
-                            : undefined
+                              ? "purple"
+                              : offer.offered_card.rarity_name === "Legendary"
+                                ? "yellow"
+                                : undefined
                         }
                         glarePosition="all"
                         transitionSpeed={200}
                         className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0 cursor-pointer"
                       >
-                        <div onClick={() => flipCard(`${offer.id}_offered`)} className={`flip-card-inner ${flippedCards[`${offer.id}_offered`] ? "flipped" : ""}`}>
+                        <div
+                          onClick={() => flipCard(`${offer.id}_offered`)}
+                          className={`flip-card-inner ${flippedCards[`${offer.id}_offered`] ? "flipped" : ""}`}
+                        >
                           <div className="flip-card-front absolute inset-0 w-full h-full">
                             <img
                               src={offer.offered_card.image_path}
@@ -446,11 +451,21 @@ export default function Trade() {
                             />
                           </div>
                           <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
-                            <div className="text-xs font-bold mb-1">{offer.offered_card.name}</div>
-                            <div className="text-xs mb-1">
-                              <span className={getRarityColor(offer.offered_card.rarity_name)}>{offer.offered_card.rarity_name}</span>
+                            <div className="text-xs font-bold mb-1">
+                              {offer.offered_card.name}
                             </div>
-                            <div className="text-xs">Kolekce: {offer.offered_card.collection_name}</div>
+                            <div className="text-xs mb-1">
+                              <span
+                                className={getRarityColor(
+                                  offer.offered_card.rarity_name
+                                )}
+                              >
+                                {offer.offered_card.rarity_name}
+                              </span>
+                            </div>
+                            <div className="text-xs">
+                              Kolekce: {offer.offered_card.collection_name}
+                            </div>
                           </div>
                         </div>
                       </Tilt>
@@ -469,16 +484,19 @@ export default function Trade() {
                           offer.wanted_card.rarity_name === "Rare"
                             ? "blue"
                             : offer.wanted_card.rarity_name === "Mythical"
-                            ? "purple"
-                            : offer.wanted_card.rarity_name === "Legendary"
-                            ? "yellow"
-                            : undefined
+                              ? "purple"
+                              : offer.wanted_card.rarity_name === "Legendary"
+                                ? "yellow"
+                                : undefined
                         }
                         glarePosition="all"
                         transitionSpeed={200}
                         className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0 cursor-pointer"
                       >
-                        <div onClick={() => flipCard(`${offer.id}_wanted`)} className={`flip-card-inner ${flippedCards[`${offer.id}_wanted`] ? "flipped" : ""}`}>
+                        <div
+                          onClick={() => flipCard(`${offer.id}_wanted`)}
+                          className={`flip-card-inner ${flippedCards[`${offer.id}_wanted`] ? "flipped" : ""}`}
+                        >
                           <div className="flip-card-front absolute inset-0 w-full h-full">
                             <img
                               src={offer.wanted_card.image_path}
@@ -497,11 +515,21 @@ export default function Trade() {
                             />
                           </div>
                           <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
-                            <div className="text-xs font-bold mb-1">{offer.wanted_card.name}</div>
-                            <div className="text-xs mb-1">
-                              <span className={getRarityColor(offer.wanted_card.rarity_name)}>{offer.wanted_card.rarity_name}</span>
+                            <div className="text-xs font-bold mb-1">
+                              {offer.wanted_card.name}
                             </div>
-                            <div className="text-xs">Kolekce: {offer.wanted_card.collection_name}</div>
+                            <div className="text-xs mb-1">
+                              <span
+                                className={getRarityColor(
+                                  offer.wanted_card.rarity_name
+                                )}
+                              >
+                                {offer.wanted_card.rarity_name}
+                              </span>
+                            </div>
+                            <div className="text-xs">
+                              Kolekce: {offer.wanted_card.collection_name}
+                            </div>
                           </div>
                         </div>
                       </Tilt>
@@ -567,16 +595,19 @@ export default function Trade() {
                           offer.offered_card.rarity_name === "Rare"
                             ? "blue"
                             : offer.offered_card.rarity_name === "Mythical"
-                            ? "purple"
-                            : offer.offered_card.rarity_name === "Legendary"
-                            ? "yellow"
-                            : undefined
+                              ? "purple"
+                              : offer.offered_card.rarity_name === "Legendary"
+                                ? "yellow"
+                                : undefined
                         }
                         glarePosition="all"
                         transitionSpeed={200}
                         className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0 cursor-pointer"
                       >
-                        <div onClick={() => flipCard(`${offer.id}_offered`)} className={`flip-card-inner ${flippedCards[`${offer.id}_offered`] ? "flipped" : ""}`}>
+                        <div
+                          onClick={() => flipCard(`${offer.id}_offered`)}
+                          className={`flip-card-inner ${flippedCards[`${offer.id}_offered`] ? "flipped" : ""}`}
+                        >
                           <div className="flip-card-front absolute inset-0 w-full h-full">
                             <img
                               src={offer.offered_card.image_path}
@@ -595,11 +626,21 @@ export default function Trade() {
                             />
                           </div>
                           <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
-                            <div className="text-xs font-bold mb-1">{offer.offered_card.name}</div>
-                            <div className="text-xs mb-1">
-                              <span className={getRarityColor(offer.offered_card.rarity_name)}>{offer.offered_card.rarity_name}</span>
+                            <div className="text-xs font-bold mb-1">
+                              {offer.offered_card.name}
                             </div>
-                            <div className="text-xs">Kolekce: {offer.offered_card.collection_name}</div>
+                            <div className="text-xs mb-1">
+                              <span
+                                className={getRarityColor(
+                                  offer.offered_card.rarity_name
+                                )}
+                              >
+                                {offer.offered_card.rarity_name}
+                              </span>
+                            </div>
+                            <div className="text-xs">
+                              Kolekce: {offer.offered_card.collection_name}
+                            </div>
                           </div>
                         </div>
                       </Tilt>
@@ -618,16 +659,19 @@ export default function Trade() {
                           offer.wanted_card.rarity_name === "Rare"
                             ? "blue"
                             : offer.wanted_card.rarity_name === "Mythical"
-                            ? "purple"
-                            : offer.wanted_card.rarity_name === "Legendary"
-                            ? "yellow"
-                            : undefined
+                              ? "purple"
+                              : offer.wanted_card.rarity_name === "Legendary"
+                                ? "yellow"
+                                : undefined
                         }
                         glarePosition="all"
                         transitionSpeed={200}
                         className="flex items-center gap-2 relative w-40 h-40 flex-shrink-0 cursor-pointer"
                       >
-                        <div onClick={() => flipCard(`${offer.id}_wanted`)} className={`flip-card-inner ${flippedCards[`${offer.id}_wanted`] ? "flipped" : ""}`}>
+                        <div
+                          onClick={() => flipCard(`${offer.id}_wanted`)}
+                          className={`flip-card-inner ${flippedCards[`${offer.id}_wanted`] ? "flipped" : ""}`}
+                        >
                           <div className="flip-card-front absolute inset-0 w-full h-full">
                             <img
                               src={offer.wanted_card.image_path}
@@ -652,18 +696,31 @@ export default function Trade() {
                                 Kol: {offer.wanted_card.collection_name}
                               </div>
                               {offer.wanted_card.rarity_name && (
-                                <div className={`text-[0.5rem] truncate ${getRarityColor(offer.wanted_card.rarity_name)}`}>
+                                <div
+                                  className={`text-[0.5rem] truncate ${getRarityColor(offer.wanted_card.rarity_name)}`}
+                                >
                                   R: {offer.wanted_card.rarity_name}
                                 </div>
                               )}
                             </div>
                           </div>
                           <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
-                            <div className="text-xs font-bold mb-1">{offer.wanted_card.name}</div>
-                            <div className="text-xs mb-1">
-                              Rarita: <span className={getRarityColor(offer.wanted_card.rarity_name)}>{offer.wanted_card.rarity_name}</span>
+                            <div className="text-xs font-bold mb-1">
+                              {offer.wanted_card.name}
                             </div>
-                            <div className="text-xs">Kolekce: {offer.wanted_card.collection_name}</div>
+                            <div className="text-xs mb-1">
+                              Rarita:{" "}
+                              <span
+                                className={getRarityColor(
+                                  offer.wanted_card.rarity_name
+                                )}
+                              >
+                                {offer.wanted_card.rarity_name}
+                              </span>
+                            </div>
+                            <div className="text-xs">
+                              Kolekce: {offer.wanted_card.collection_name}
+                            </div>
                           </div>
                         </div>
                       </Tilt>

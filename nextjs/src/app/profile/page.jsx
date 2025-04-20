@@ -163,70 +163,87 @@ export default function ProfileComponent() {
                     </div>
                     {expandedCollections[collectionId] && (
                       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 mt-2">
-                        {Object.values(collectionData.cards).map((card, index) => (
-                          <Tilt
-                            key={card.id}
-                            tiltMaxAngleX={10}
-                            tiltMaxAngleY={10}
-                            perspective={500}
-                            scale={1.02}
-                            glareEnable={
-                              card.rarity_name === "Rare" ||
-                              card.rarity_name === "Mythical" ||
-                              card.rarity_name === "Legendary" ||
-                              card.holo
-                            }
-                            glareMaxOpacity={0.3}
-                            glareColor={
-                              card.rarity_name === "Rare" ? "blue" :
-                              card.rarity_name === "Mythical" ? "purple" :
-                              card.rarity_name === "Legendary" ? "yellow" :
-                              undefined
-                            }
-                            glarePosition="all"
-                            transitionSpeed={200}
-                          >
-                            <motion.div
-                              className={`relative w-24 h-36 rounded-md shadow-md overflow-hidden cursor-pointer`}
-                              initial={{ opacity: 0, y: -20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ delay: 5 * 0.1 }}
-                              onClick={() => flipCard(index)}
+                        {Object.values(collectionData.cards).map(
+                          (card, index) => (
+                            <Tilt
+                              key={card.id}
+                              tiltMaxAngleX={10}
+                              tiltMaxAngleY={10}
+                              perspective={500}
+                              scale={1.02}
+                              glareEnable={
+                                card.rarity_name === "Rare" ||
+                                card.rarity_name === "Mythical" ||
+                                card.rarity_name === "Legendary" ||
+                                card.holo
+                              }
+                              glareMaxOpacity={0.3}
+                              glareColor={
+                                card.rarity_name === "Rare"
+                                  ? "blue"
+                                  : card.rarity_name === "Mythical"
+                                    ? "purple"
+                                    : card.rarity_name === "Legendary"
+                                      ? "yellow"
+                                      : undefined
+                              }
+                              glarePosition="all"
+                              transitionSpeed={200}
                             >
-                              <div className={`flip-card-inner ${flippedCards[index] ? "flipped" : ""}`}>
-                                <div className="flip-card-front absolute inset-0 w-full h-full">
-                                  <img
-                                    src={card.card_image_path}
-                                    alt={card.card_name}
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                  />
-                                  <img
-                                    src={card.frame_image_path}
-                                    alt={`${card.card_name} Frame`}
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                  />
-                                  <img
-                                    src={card.icon_image_path}
-                                    alt={`${card.card_name} Icon`}
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                  />
-                                </div>
-                                <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
-                                  <div className="text-xs font-bold mb-1">{card.card_name}</div>
-                                  <div className="text-xs mb-1">
-                                    <span className={getRarityColor(card.rarity_name)}>{card.rarity_name}</span>
+                              <motion.div
+                                className={`relative w-24 h-36 rounded-md shadow-md overflow-hidden cursor-pointer`}
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 5 * 0.1 }}
+                                onClick={() => flipCard(index)}
+                              >
+                                <div
+                                  className={`flip-card-inner ${flippedCards[index] ? "flipped" : ""}`}
+                                >
+                                  <div className="flip-card-front absolute inset-0 w-full h-full">
+                                    <img
+                                      src={card.card_image_path}
+                                      alt={card.card_name}
+                                      className="absolute inset-0 w-full h-full object-cover"
+                                    />
+                                    <img
+                                      src={card.frame_image_path}
+                                      alt={`${card.card_name} Frame`}
+                                      className="absolute inset-0 w-full h-full object-cover"
+                                    />
+                                    <img
+                                      src={card.icon_image_path}
+                                      alt={`${card.card_name} Icon`}
+                                      className="absolute inset-0 w-full h-full object-cover"
+                                    />
                                   </div>
-                                  <div className="text-xs">Kolekce: {card.collection_name}</div>
-                                  {card.card_quantity > 1 && (
-                                    <span className="mt-2 bg-indigo-500 text-white text-xs font-semibold rounded-full px-2 py-1 shadow-md">
-                                      x{card.card_quantity}
-                                    </span>
-                                  )}
+                                  <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
+                                    <div className="text-xs font-bold mb-1">
+                                      {card.card_name}
+                                    </div>
+                                    <div className="text-xs mb-1">
+                                      <span
+                                        className={getRarityColor(
+                                          card.rarity_name
+                                        )}
+                                      >
+                                        {card.rarity_name}
+                                      </span>
+                                    </div>
+                                    <div className="text-xs">
+                                      Kolekce: {card.collection_name}
+                                    </div>
+                                    {card.card_quantity > 1 && (
+                                      <span className="mt-2 bg-indigo-500 text-white text-xs font-semibold rounded-full px-2 py-1 shadow-md">
+                                        x{card.card_quantity}
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            </motion.div>
-                          </Tilt>
-                        ))}
+                              </motion.div>
+                            </Tilt>
+                          )
+                        )}
                       </div>
                     )}
                   </div>

@@ -8,7 +8,7 @@
 - [x] alespoň tři funkce různého typu s odpovídající složitostí
 - [x] alespoň tři uložené procedury
 - [x] alespoň dva triggery
-- [ ] alespoň jedna transakce s ošetřeným chováním při rollbacku
+- [x] alespoň jedna transakce s ošetřeným chováním při rollbacku
 - [x] použití indexů na neklíčové sloupce
 - [x] použití kompozitních primárních klíčů
 - [x] vyzkoušet si použití datového typu JSON v moderních relačních databázích (rozumné použití včetně filtrace nad těmito sloupci může ovlivnit počet požadovaných databázových tabulek, případně odpuštění jednoho ze zde uvedených požadavků – záleží na domluvě se cvičícím)
@@ -16,7 +16,7 @@
 - [x] doporučené rozjetí projektu v Dockeru pomocí docker-compose – bude zajištěna inicializace struktury databáze a nahrání dat při startu
 - [x] verzování vývoje pomocí Gitu
 - [x] vhodným způsobem zajistit ukládání obrázků, které budou v aplikaci načteny a zobrazeny
-- [ ] aplikace bude využívat minimálně 2 plnohodnotné formuláře (např. ošetření vstupních polí, apod.) pro vytváření nebo modifikaci dat v tabulkách
+- [x] aplikace bude využívat minimálně 2 plnohodnotné formuláře (např. ošetření vstupních polí, apod.) pro vytváření nebo modifikaci dat v tabulkách
 
 ## Commands
 

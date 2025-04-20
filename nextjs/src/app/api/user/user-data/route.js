@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import pool from "@/lib/db";
 import { auth } from "@/auth";
 
-export async function GET(_) {
+export async function GET() {
   try {
     const session = await auth();
 
@@ -11,7 +11,6 @@ export async function GET(_) {
     }
 
     const databaseId = session.user.databaseId;
-    const client = await pool.connect();
 
     const query = `
         SELECT
@@ -43,8 +42,7 @@ export async function GET(_) {
             col.name;
     `;
 
-    const result = await client.query(query, [databaseId]);
-    client.release();
+    const result = await pool.query(query, [databaseId]);
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: "No cards found" }, { status: 404 });
@@ -63,7 +61,7 @@ export async function GET(_) {
       card_id: row.card_id
     }));
 
-    return NextResponse.json(cards, { status: 200 });
+    return NextResponse.json(cards);
   } catch (err) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

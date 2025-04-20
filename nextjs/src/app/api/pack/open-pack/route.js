@@ -15,7 +15,7 @@ export async function POST(request) {
     const client = await pool.connect();
 
     const result = await client.query(
-      "SELECT get_random_cards_from_package($1) AS result",
+      "SELECT get_random_cards_from_package($1) AS result;",
       [packId]
     );
 
@@ -42,8 +42,7 @@ export async function POST(request) {
       JOIN card_rarities ON cards.rarity_id = card_rarities.id
       JOIN card_frames ON cards.frame_id = card_frames.id
       JOIN card_icons ON cards.icon_id = card_icons.id
-      WHERE cards.id = ANY ($1);
-    `;
+      WHERE cards.id = ANY ($1);`;
     const cardDetailsResult = await client.query(cardDetailsQuery, [cardIds]);
 
     const detailedCardsMap = new Map();
@@ -55,7 +54,7 @@ export async function POST(request) {
 
     client.release();
 
-    return NextResponse.json({ cards: detailedCards }, { status: 200 });
+    return NextResponse.json({ cards: detailedCards });
   } catch (err) {
     console.error("Error:", err);
     return NextResponse.json({ error: err.message }, { status: 500 });

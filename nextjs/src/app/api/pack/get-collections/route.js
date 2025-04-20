@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
 import pool from "@/lib/db";
 
-export async function GET(_) {
+export async function GET() {
   try {
-    const client = await pool.connect();
-
     const query = `
             SELECT
                 collections.id AS collection_id,
@@ -37,8 +35,7 @@ export async function GET(_) {
             
             ORDER BY collections.id, cards.id;
         `;
-    const result = await client.query(query);
-    client.release();
+    const result = await pool.query(query);
 
     if (result.rows.length === 0) {
       return NextResponse.json(
@@ -103,13 +100,10 @@ export async function GET(_) {
       }
     });
 
-    return NextResponse.json(
-      {
-        collections: Object.values(collections),
-        message: "Kolekce úspěšně načteny!"
-      },
-      { status: 200 }
-    );
+    return NextResponse.json({
+      collections: Object.values(collections),
+      message: "Kolekce úspěšně načteny!"
+    });
   } catch (err) {
     console.error("Error in API:", err);
     return NextResponse.json(

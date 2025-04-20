@@ -44,7 +44,7 @@ export default function Pack() {
   };
 
   const flipCard = (index) => {
-    setFlippedCards(prev => {
+    setFlippedCards((prev) => {
       const newFlipped = [...prev];
       newFlipped[index] = !newFlipped[index];
       return newFlipped;
@@ -106,7 +106,6 @@ export default function Pack() {
     if (response.ok) {
       const data = await response.json();
 
-
       console.log(data);
 
       setPacks(data);
@@ -141,7 +140,9 @@ export default function Pack() {
                     alt={pack.name}
                     className="absolute inset-0 w-full h-full object-cover z-[-1]"
                   />
-                  <h3 className="absolute font-bold text-xl bottom-0 mb-4">{pack.name}</h3>
+                  <h3 className="absolute font-bold text-xl bottom-0 mb-4">
+                    {pack.name}
+                  </h3>
                 </div>
               </motion.div>
             ))}
@@ -172,10 +173,13 @@ export default function Pack() {
                   }
                   glareMaxOpacity={0.3}
                   glareColor={
-                    card.rarity_name === "Rare" ? "blue" :
-                    card.rarity_name === "Mythical" ? "purple" :
-                    card.rarity_name === "Legendary" ? "yellow" :
-                    undefined
+                    card.rarity_name === "Rare"
+                      ? "blue"
+                      : card.rarity_name === "Mythical"
+                        ? "purple"
+                        : card.rarity_name === "Legendary"
+                          ? "yellow"
+                          : undefined
                   }
                   glarePosition="all"
                   transitionSpeed={200}
@@ -187,7 +191,9 @@ export default function Pack() {
                     transition={{ delay: index * 0.1 }}
                     onClick={() => flipCard(index)}
                   >
-                    <div className={`flip-card-inner ${flippedCards[index] ? "flipped" : ""}`}>
+                    <div
+                      className={`flip-card-inner ${flippedCards[index] ? "flipped" : ""}`}
+                    >
                       <div className="flip-card-front absolute inset-0 w-full h-full">
                         <img
                           src={card.card_image}
@@ -206,11 +212,17 @@ export default function Pack() {
                         />
                       </div>
                       <div className="flip-card-back absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-gray-900 text-white">
-                        <div className="text-lg font-bold mb-2">{card.card_name}</div>
-                        <div className="text-md mb-2">
-                          <span className={getRarityColor(card.rarity_name)}>{card.rarity_name}</span>
+                        <div className="text-lg font-bold mb-2">
+                          {card.card_name}
                         </div>
-                        <div className="text-sm">Kolekce: {card.collection_name}</div>
+                        <div className="text-md mb-2">
+                          <span className={getRarityColor(card.rarity_name)}>
+                            {card.rarity_name}
+                          </span>
+                        </div>
+                        <div className="text-sm">
+                          Kolekce: {card.collection_name}
+                        </div>
                       </div>
                     </div>
                   </motion.div>
